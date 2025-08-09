@@ -1,0 +1,6 @@
+@core8_nextjs_postgre_HostAddress = http://localhost:5159
+
+GET {{core8_nextjs_postgre_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,38 @@
+{
+  "name": "clientapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "next dev --turbopack",
+    "build": "next build",
+    "dev": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
+    "@fortawesome/free-brands-svg-icons": "^7.0.0",
+    "@fortawesome/free-solid-svg-icons": "^7.0.0",
+    "@fortawesome/react-fontawesome": "^0.2.3",
+    "@popperjs/core": "^2.11.8",
+    "@types/axios": "^0.9.36",
+    "@types/jquery": "^2.0.68",
+    "axios": "^1.11.0",
+    "bootstrap": "^5.3.7",
+    "cookies-next": "^6.1.0",
+    "jquery": "^2.2.4",
+    "next": "15.4.6",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
