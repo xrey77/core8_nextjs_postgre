@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import axios from 'axios';
 import Footer from './layout/footer';
@@ -54,8 +55,8 @@ const Productsearch = (props: any) => {
     }
      
   return (
-    <div className="container mb-4">
-        <h2>Prouct Search</h2>
+    <div className="container mb-9">
+        <h2>Products Search</h2>
 
         <form className="row g-3" onSubmit={getProdsearch} autoComplete='off'>
             <div className="col-auto">
@@ -67,7 +68,7 @@ const Productsearch = (props: any) => {
             <div className='searcMsg'>{message}</div>
 
         </form>
-        <div className="container">
+        <div className="container mb-9">
           <div className="card-group">
         {prodsearch.map((item) => {
                 return (
@@ -79,13 +80,15 @@ const Productsearch = (props: any) => {
                       <p className="card-text desc-h">{item['descriptions']}</p>
                     </div>
                     <div className="card-footer">
-                      <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{item['sellPrice']}</strong></p>
+                      <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{formatNumberWithCommaDecimal(item['sellPrice'])}</strong></p>
                     </div>  
                 </div>
+                
                 </div>
           );    
         })}
           </div>          
+          <br/><br/><br/>
         </div>
         <Footer/>
     </div>

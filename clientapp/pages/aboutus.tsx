@@ -1,3 +1,4 @@
+'use client'
 import Footer from './layout/footer';
 
 const Aboutus = () => {
@@ -35,6 +36,8 @@ const Aboutus = () => {
             </p>
         </div>
     </div>        
+    <br/><br/><br/>
+
     <Footer/>
     </div>    
 

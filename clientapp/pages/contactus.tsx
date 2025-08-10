@@ -1,3 +1,4 @@
+'use clinet'
 import Footer from './layout/footer';
 
 const Contactus = (props: any) => {
@@ -47,6 +48,7 @@ const Contactus = (props: any) => {
                 </p>
 
             </div>
+            <br/><br/><br/>
             <Footer/>
         </div>
     )

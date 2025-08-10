@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
 import axios from 'axios';
@@ -23,6 +24,16 @@ interface Products {
   sellPrice: number,
   productPicture: string
 }
+
+const formatNumberWithCommaDecimal = (number: any) => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2, // Ensures at least two decimal places
+    maximumFractionDigits: 2, // Limits to two decimal places
+  });
+  // Format the number
+  return formatter.format(number);
+};
+
 
 const Productlist = (props: any) => {
 
@@ -106,7 +117,7 @@ const Productlist = (props: any) => {
                  <td>{item['descriptions']}</td>
                  <td>{item['qty']}</td>
                  <td>{item['unit']}</td>
-                 <td>&#8369;{item['sellPrice']}</td>
+                 <td>&#8369;{formatNumberWithCommaDecimal(item['sellPrice'])}</td>
                </tr>
               );
         })}

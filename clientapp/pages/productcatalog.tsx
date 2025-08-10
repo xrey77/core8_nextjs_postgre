@@ -1,5 +1,5 @@
+'use client'
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
 import Footer from './layout/footer';
@@ -24,6 +24,16 @@ interface Products {
   sellPrice: number,
   productPicture: string
 }
+
+const formatNumberWithCommaDecimal = (number: any) => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2, // Ensures at least two decimal places
+    maximumFractionDigits: 2, // Limits to two decimal places
+  });
+  // Format the number
+  return formatter.format(number);
+};
+
  const Productcatalog = (props: any) => {
     let [page, setPage] = useState<number>(1);
     let [prods, setProds] = useState<Products[]>([]);
@@ -84,7 +94,7 @@ interface Products {
 
     return(
     <div className="container mb-9">
-            <h3 className='text-center'>Product Catalog</h3>
+            <h3 className='text-center'>Products Catalog</h3>
             <div className="card-group mb-3">
             {prods.map((item) => {
                     return (
@@ -95,7 +105,7 @@ interface Products {
                             <p className="card-text">{item['descriptions']}</p>
                         </div>
                         <div className="card-footer">
-                            <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{item['sellPrice']}</strong></p>
+                            <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{formatNumberWithCommaDecimal(item['sellPrice'])}</strong></p>
                         </div>  
                     </div>
                 );

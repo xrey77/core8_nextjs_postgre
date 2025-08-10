@@ -155,7 +155,7 @@ export default function Header({}) {
           <li className="nav-item"><hr/></li>
           <li className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle active" href="/#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <FontAwesomeIcon icon={faList}/>&nbsp;Products
+                  <FontAwesomeIcon icon={faList}/>&nbsp;Products
                 </Link>
                 <ul className="dropdown-menu">
                   <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" href="/productlist">Products List</Link></li>

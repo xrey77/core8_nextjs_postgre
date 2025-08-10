@@ -1,13 +1,10 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
-import Image from 'next/image'
+'use client'
+import Image from 'next/image';
 import car1 from '../public/images/1.jpeg';
 import car2 from '../public/images/2.jpeg';
 import car3 from '../public/images/3.jpeg';
 import car4 from '../public/images/4.jpeg';
 import Footer from './layout/footer';
-
-// import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home({}) {
   return (
