@@ -1,5 +1,7 @@
 'use client'
 // import { useRouter } from 'next/navigation';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUnlock } from '@fortawesome/free-solid-svg-icons'; 
 import React, { useState } from 'react'
 // import { setCookie } from 'cookies-next/client';
 import Mfa from './Mfa';
@@ -91,7 +93,7 @@ export default function Login() {
   <div className="modal-dialog modal-sm modal-dialog-centered">
     <div className="modal-content">
       <div className="modal-header bg-primary">
-        <h1 className="modal-title fs-5 text-white" id="staticLoginLabel">Users Signin</h1>
+        <h1 className="modal-title fs-5 text-white" id="staticLoginLabel"><FontAwesomeIcon icon={faUnlock}/>&nbsp;User Signin</h1>
         <button id="close" onClick={closeLogin} type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">

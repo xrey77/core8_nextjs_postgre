@@ -203,8 +203,17 @@ a {
  }
 
  .product-size {
-  width: 300px;
-  height: auto;
+  width: 330px !important;
+  height: 330px !important;
+}
+.desc-h {
+  height: 50px !important;
+}
+.card-body {
+  width: 350px !important;
+}
+.card-size {
+  max-width: 500px !important;
 }
 
 #offcanvasMenu {
@@ -232,3 +241,19 @@ a {
 .drop1 {
   color: yellow;
 }
+
+.text-red {
+  color: yellow;
+}
+
+
+@media (max-width: 991.98px) {
+  .carousel-inner .carousel-item img {
+    max-width: 100% !important;
+    height: 350px !important;
+    border-radius: 20px;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  
+ }

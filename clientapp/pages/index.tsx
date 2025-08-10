@@ -5,6 +5,7 @@ import car1 from '../public/images/1.jpeg';
 import car2 from '../public/images/2.jpeg';
 import car3 from '../public/images/3.jpeg';
 import car4 from '../public/images/4.jpeg';
+import Footer from './layout/footer';
 
 // import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -40,6 +41,18 @@ export default function Home({}) {
         </button>
       </div>
       </main>
+      <div className="card mb-5 mt-3 mx-2 bg-dark">
+        <div className="card-header mx-2 bg-dark border-success"><h3 className='text-center text-red'>Supercar Technology</h3></div>
+        <div className="card bg-secondary mx-2">
+          <h5 className="card-title mx-1 text-warning mt-2">Defined by success</h5>
+          <p className="card-text mb-1 mx-1 text-light">
+            The pinnacle of automotive engineering and design, often featuring exceptional speed, powerful engines, advanced aerodynamics, and cutting-edge technology. They are typically characterized by their distinctive and attention-grabbing designs, high price tags, and limited production numbers
+            </p>
+        </div>
+      <div className="card-footer bg-transparent border-success"></div>
+</div>
+
+      <Footer/>
     </>
   )
 }

@@ -1,4 +1,6 @@
 'use client';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faList, faMapLocation, faCircleQuestion, faAddressCard, faUnlock } from '@fortawesome/free-solid-svg-icons'; 
 import  Link  from 'next/link';
 import Image from 'next/image';
 import logo from '../../public/images/logo.png';
@@ -83,21 +85,21 @@ export default function Header({}) {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link  onMouseEnter={servicesDropdownHide} className="nav-link active text-white" aria-current="page" href="/aboutus">About Us</Link>
+              <Link  onMouseEnter={servicesDropdownHide} className="nav-link active text-white" aria-current="page" href="/aboutus"><FontAwesomeIcon icon={faCircleQuestion}/>&nbsp;About Us</Link>
             </li>
             <li className="nav-item dropdown">
               <Link onMouseEnter={productDropdown} className="nav-link dropdown-toggle text-white active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Products
+              <FontAwesomeIcon icon={faList}/>&nbsp;Products
               </Link>
               <ul id="nav2b" onMouseLeave={productDropleave} className="dropdown-menu">
-                <li><Link className="dropdown-item" href="/#">Sports Car</Link></li>
-                <li><Link className="dropdown-item" href="/#">Delivery Trucks</Link></li>
+                <li><Link className="dropdown-item" href="/productlist">Products List</Link></li>
+                <li><Link className="dropdown-item" href="/productcatalog">Products Catalog</Link></li>
                 <li><hr className="dropdown-divider"/></li>
-                <li><Link className="dropdown-item" href="/#">Auto Spare Parts</Link></li>
+                <li><Link className="dropdown-item" href="/productsearch">Product Search</Link></li>
               </ul>
             </li>
             <li className="nav-item">
-              <Link onMouseEnter={productDropdownHide} className="nav-link text-white active" href="/contactus">Contact Us</Link>
+              <Link onMouseEnter={productDropdownHide} className="nav-link text-white active" href="/contactus"><FontAwesomeIcon icon={faMapLocation}/>&nbsp;Contact Us</Link>
             </li>
           </ul>
           <ul className="navbar-nav mr-auto">
@@ -122,10 +124,10 @@ export default function Header({}) {
             ) : (
             <>
             <li className="nav-item">
-                <Link className="nav-link text-white active" href="/#" data-bs-toggle="modal" data-bs-target="#staticLogin">Login</Link>
+                <Link className="nav-link text-white active" href="/#" data-bs-toggle="modal" data-bs-target="#staticLogin"><FontAwesomeIcon icon={faUnlock}/>&nbsp;Login</Link>
             </li>
             <li className="nav-item">
-                <Link className="nav-link text-white active" href="/#" data-bs-toggle="modal" data-bs-target="#staticRegister">Register</Link>
+                <Link className="nav-link text-white active" href="/#" data-bs-toggle="modal" data-bs-target="#staticRegister"><FontAwesomeIcon icon={faAddressCard}/>&nbsp;Register</Link>
             </li>
             </>
             )
@@ -148,25 +150,25 @@ export default function Header({}) {
 
         <ul className="nav flex-column">
           <li className="nav-item" data-bs-dismiss="offcanvas">
-            <Link className="nav-link active" aria-current="page" href="/aboutus">About Us</Link>
+            <Link className="nav-link active" aria-current="page" href="/aboutus"><FontAwesomeIcon icon={faCircleQuestion}/>&nbsp;About Us</Link>
           </li>
           <li className="nav-item"><hr/></li>
           <li className="nav-item dropdown">
                 <Link className="nav-link dropdown-toggle active" href="/#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Products
+                <FontAwesomeIcon icon={faList}/>&nbsp;Products
                 </Link>
                 <ul className="dropdown-menu">
-                  <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" href="/#">Sports Car</Link></li>
+                  <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" href="/productlist">Products List</Link></li>
                   <li><hr className="dropdown-divider"/></li>
-                  <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" href="/#">Delivery Trucks</Link></li>
+                  <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" href="/productcatalog">Products Catalog</Link></li>
                   <li><hr className="dropdown-divider"/></li>
-                  <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" href="/#">Auto Spare Parts</Link></li>
+                  <li data-bs-dismiss="offcanvas"><Link className="dropdown-item" href="/productsearch">Product Search</Link></li>
                 </ul>
             </li>
 
             <li className="nav-item"><hr/></li>
             <li className="nav-item" data-bs-dismiss="offcanvas">
-              <Link className="nav-link active" aria-current="page" href="/contactus">Contact Us</Link>
+              <Link className="nav-link active" aria-current="page" href="/contactus"><FontAwesomeIcon icon={faMapLocation}/>&nbsp;Contact Us</Link>
             </li>
             <li className="nav-item"><hr/></li>
 
@@ -203,11 +205,11 @@ export default function Header({}) {
               ) : (
                   <ul className="nav flex-column">
                     <li className="nav-item" data-bs-dismiss="offcanvas">
-                      <Link className="nav-link active" href="/#" data-bs-toggle="modal" data-bs-target="#staticLogin">Login</Link>
+                      <Link className="nav-link active" href="/#" data-bs-toggle="modal" data-bs-target="#staticLogin"><FontAwesomeIcon icon={faUnlock}/>&nbsp;Login</Link>
                     </li>
                     <li className="nav-item"><hr/></li>
                     <li className="nav-item" data-bs-dismiss="offcanvas">
-                      <Link className="nav-link active" href="/#" data-bs-toggle="modal" data-bs-target="#staticRegister">Register</Link>
+                      <Link className="nav-link active" href="/#" data-bs-toggle="modal" data-bs-target="#staticRegister"><FontAwesomeIcon icon={faAddressCard}/>&nbsp;Register</Link>
                     </li>            
                   </ul>
               )    

@@ -1,30 +1,49 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import Link from 'next/link';
+import axios from 'axios';
+import Footer from './layout/footer';
 
+const api = axios.create({
+  baseURL: "https://localhost:7292",
+  headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'}
+})
+
+interface Productdata {
+  totpage: string,
+  page: string,
+  products: Products
+}
+
+interface Products {
+  id: number,
+  descriptions: string,  
+  qty: number,
+  unit: string,
+  sellPrice: number,
+  productPicture: string
+}
  const Productcatalog = (props: any) => {
-    let [page, setPage] = useState(1);
-    let [prods, setProds] = useState([]);
-    let [totpage, setTotpage] = useState(null);
+    let [page, setPage] = useState<number>(1);
+    let [prods, setProds] = useState<Products[]>([]);
+    let [totpage, setTotpage] = useState<number>(0);
 
     const fetchCatalog = async (pg: any) => {
-      await fetch(`/api/product/list?page=${page}`)
-      .then((response) => response.json())
-      .then((json) => {
-        setProds(json.products);
-        setTotpage(json.totpages);
-      });
+      api.get<Productdata>(`/api/listproducts/${pg}`)
+      .then((res) => {
+        const data: Productdata = res.data;
+        setProds(data.products);
+        setTotpage(data.totpage);
+        setPage(data.page);
+      }, (error: any) => {
+              console.log(error.message);
+              return;
+      });      
     }
 
     useEffect(() => {
-      // fetch(`/api/product/list?page=${page}`)
-      // .then((response) => response.json())
-      // .then((json) => {
-      //   setProds(json.products);
-      //   setTotpage(json.totpages);
-      //   setPage(json.page);           
-      // });
-
+      fetchCatalog(page)
     },[page]);
 
     const firstPage = (event: any) => {
@@ -70,13 +89,13 @@ import Link from 'next/link';
             {prods.map((item) => {
                     return (
                     <div key={item.id} className="card">
-                        <Image src={item['prod_pic']} className="card-img-top" alt="" width={200} height={200}/>
+                        <img src={item['productPicture']} className="card-img-top" alt=""/>
                         <div className="card-body">
                             <h5 className="card-title">Descriptions</h5>
                             <p className="card-text">{item['descriptions']}</p>
                         </div>
                         <div className="card-footer">
-                            <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{item['sell_price']}</strong></p>
+                            <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{item['sellPrice']}</strong></p>
                         </div>  
                     </div>
                 );
@@ -96,7 +115,7 @@ import Link from 'next/link';
       <br/><br/>
       </div>
 
-
+    <Footer/>
     </div>
     )
 }

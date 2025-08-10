@@ -48,10 +48,7 @@ namespace core8_nextjs_postgre.Services
 
         public IEnumerable<Product> SearchAll(string key)
         {
-            var columnName = $"descriptions";
-            var columnValue = new NpgsqlParameter("columnValue", "%" + key + "%");
-            var sql = $"SELECT * FROM [Products] WHERE {columnName} LIKE @columnValue";
-            var products = _context.Products.FromSqlRaw(sql, columnValue).ToList();
+            var products = _context.Products.FromSqlRaw("SELECT * FROM products WHERE lower(descriptions) LIKE '%" + key + "%'").ToList();
             return products;
         }
 

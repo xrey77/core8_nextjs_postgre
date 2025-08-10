@@ -1,22 +1,50 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
+import axios from 'axios';
+import Footer from './layout/footer';
 
-const Productlist = (props) => {
+const api = axios.create({
+  baseURL: "https://localhost:7292",
+  headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'}
+})
 
-    let [page, setPage] = useState(1);
-    let [products, setProducts] = useState([]);
-    let [totpage, setTotpage] = useState(null);
+interface Productdata {
+  totpage: string,
+  page: string,
+  products: Products
+}
+
+interface Products {
+  id: number,
+  descriptions: string,  
+  qty: number,
+  unit: string,
+  sellPrice: number,
+  productPicture: string
+}
+
+const Productlist = (props: any) => {
+
+    let [page, setPage] = useState<number>(1);
+    let [totpage, setTotpage] = useState<number>(0);
+    let [products, setProducts] = useState<Productdata[]>([]);
 
     const fetchProducts = async (pg: any) => {
-       const response = await fetch(`/api/product/list?page=${pg}`);
-       let data = await response.json();
+      api.get<Productdata>(`/api/listproducts/${pg}`)
+      .then((res) => {
+        const data: Productdata = res.data;
         setProducts(data.products);
-        setTotpage(data.totpages);
-        setPage(data.page); 
+        setTotpage(data.totpage);
+        setPage(data.page);
+      }, (error: any) => {
+              console.log(error.message);
+              return;
+      });      
     }
 
     useEffect(() => {
-      // fetchProducts(page);
+      fetchProducts(page);
    },[page]);
 
     const firstPage = (event: any) => {
@@ -57,7 +85,7 @@ const Productlist = (props) => {
 
     return(
     <div className="container">
-            <h1>Product Page</h1>
+            <h1>Products List</h1>
 
             <table className="table">
             <thead>
@@ -74,11 +102,11 @@ const Productlist = (props) => {
             {products.map((item) => {
             return (
               <tr key={item.id}>
-                 <td>{String(item['id']).substring(20,24)}</td>
+                 <td>{item['id']}</td>
                  <td>{item['descriptions']}</td>
                  <td>{item['qty']}</td>
                  <td>{item['unit']}</td>
-                 <td>&#8369;{item['sell_price']}</td>
+                 <td>&#8369;{item['sellPrice']}</td>
                </tr>
               );
         })}
@@ -97,7 +125,7 @@ const Productlist = (props) => {
 
         </ul>
       </nav>
-
+    <Footer/>
   </div>
   )
 }

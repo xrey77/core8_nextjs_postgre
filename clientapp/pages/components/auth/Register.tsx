@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAddressCard, faUnlock } from '@fortawesome/free-solid-svg-icons'; 
 
 const api = axios.create({
   baseURL: "https://localhost:7292",
@@ -94,7 +96,7 @@ export default function Register() {
   <div className="modal-dialog modal-dialog-centered">
     <div className="modal-content">
       <div className="modal-header bg-danger">
-        <h1 className="modal-title fs-5 text-white" id="staticRegistgerLabel">Account Registration</h1>
+        <h1 className="modal-title fs-5 text-white" id="staticRegistgerLabel"><FontAwesomeIcon icon={faAddressCard}/>&nbsp;Account Registration</h1>
         <button onClick={closeRegistration} type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div className="modal-body">

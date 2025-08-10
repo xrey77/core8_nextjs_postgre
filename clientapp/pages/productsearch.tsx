@@ -1,30 +1,61 @@
 import React, { useState } from 'react'
-import Image from 'next/image'
+import axios from 'axios';
+import Footer from './layout/footer';
 
+const api = axios.create({
+  baseURL: "https://localhost:7292",
+  headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'}
+})
+
+const formatNumberWithCommaDecimal = (number: any) => {
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2, // Ensures at least two decimal places
+    maximumFractionDigits: 2, // Limits to two decimal places
+  });
+  // Format the number
+  return formatter.format(number);
+};
+
+interface Productdata {
+  totpage: string,
+  page: string,
+  products: Products
+}
+
+interface Products {
+  id: number,
+  descriptions: string,  
+  qty: number,
+  unit: string,
+  sellPrice: number,
+  productPicture: string
+}
 const Productsearch = (props: any) => {
-    const [prodsearch, setProdsearch] = useState([]);
-    const [message, setMessage] = useState("");
-    let [searchkey, setSearchkey] = useState("");
-    
-    const getProdsearch = async (event: any) => {
-        event.preventDefault();                 
-        setMessage("please wait .");
-        let response = await fetch(`/api/product/search?search=${searchkey}`);
-        let data = await response.json();     
-        if (data.statuscode === 200) {
-          setProdsearch(data.product);
-        } else {
-          setMessage(data.message);
-        }
-        window.setTimeout(() => {
-          setMessage("");
-        }, 3000);  
+    const [prodsearch, setProdsearch] = useState<Products[]>([]);
+    const [message, setMessage] = useState<string>('');
+    let [searchkey, setSearchkey] = useState<string>('');
 
+    const getProdsearch = async (event: any) => {
+        event.preventDefault();
+        setMessage("please wait .");
+        const data = JSON.stringify({ search: searchkey});
+
+        api.post<Productdata>("/api/searchproducts",data)
+        .then((res) => {
+          const data: Productdata = res.data;
+            setProdsearch(data.products);
+        }, (error: any) => {
+            // setErrors(error.message);
+            console.log(error.message);
+            return;
+        });  
+        setMessage('');
     }
      
   return (
     <div className="container mb-4">
-        <h2>Search Product</h2>
+        <h2>Prouct Search</h2>
 
         <form className="row g-3" onSubmit={getProdsearch} autoComplete='off'>
             <div className="col-auto">
@@ -36,25 +67,27 @@ const Productsearch = (props: any) => {
             <div className='searcMsg'>{message}</div>
 
         </form>
-        
-        <div className="card-group mb-4">
+        <div className="container">
+          <div className="card-group">
         {prodsearch.map((item) => {
                 return (
-                  <div key={item.id} className="card">
-                    <Image src={item['prod_pic']} className="card-img-top product-size" alt="..." width={250} height={250}/>
+                <div className='col-md-4'>
+                <div key={item.id} className="card mx-3 mt-3">
+                    <img src={item['productPicture']} className="card-img-top product-size" alt=""/>
                     <div className="card-body">
                       <h5 className="card-title">Descriptions</h5>
-                      <p className="card-text">{item['descriptions']}</p>
+                      <p className="card-text desc-h">{item['descriptions']}</p>
                     </div>
                     <div className="card-footer">
-                      <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>
-                        &#8369;{item['sell_price']}</strong></p>
-                    </div>   
-                  </div>                  
-                );
+                      <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{item['sellPrice']}</strong></p>
+                    </div>  
+                </div>
+                </div>
+          );    
         })}
-        </div>    
-      
+          </div>          
+        </div>
+        <Footer/>
     </div>
   )
 }
