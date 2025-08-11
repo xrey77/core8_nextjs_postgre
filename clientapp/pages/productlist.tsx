@@ -122,7 +122,6 @@ const Productlist = (props: any) => {
               );
         })}
 
-
             </tbody>
             </table>
 

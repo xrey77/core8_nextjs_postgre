@@ -58,38 +58,6 @@ export default function Register() {
                 }, 3000);
               return;
         });
-    
-
-        // let response = await fetch('/api/auth/signup', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({
-        //     "firstname": firstname,
-        //     "lastname": lastname,
-        //     "email": email,
-        //     "mobile": mobile,
-        //     "username": username,
-        //     "password": password})            
-        // }).catch((e) => {
-        //   setMessage(e.message);
-        //   return;
-        // });
-
-        // const result = await response?.json()
-        // if (result.statuscode == 200) {
-        //   setMessage(result.message)
-        //   window.setTimeout(() => {
-        //     setMessage("");
-        //   }, 3000);
-        // } else {
-        //   setMessage(result.message)
-        //   window.setTimeout(() => {
-        //     setMessage("");
-        //   }, 3000);
-        // }
-
     }
 
   return (

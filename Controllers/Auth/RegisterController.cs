@@ -60,12 +60,14 @@ public class RegisterController : ControllerBase
                 _authService.SignupUser(user, model.Password);
                 string fullname = model.Firstname + " " + model.Lastname;
                 string emailaddress = model.Email;
-                // string htmlmsg = "<div><p>Please click Activate button below to confirm you email address and activate your account.</p>"+
-                //             "<a href=\"https://localhost:7280/api/activateuser/id=" + user.Id.ToString() + "\" style=\"background-color: green;color:white;text-decoration: none;border-radius: 20px; \">&nbsp;&nbsp; Activate Account &nbsp;&nbsp;</a></div>";
-                // string subject = "Barclays Account Activation";                
-                // IF YOU WISH TO USE USER EMAIL ACTIVATION, JUST UNCOMMENT _emailService.sendMail
-                // _emailService.sendMail(emailaddress, fullname, subject, htmlmsg);
-                // and comment  user.Isactivated = 1;    
+/*                
+                string htmlmsg = "<div><p>Please click Activate button below to confirm you email address and activate your account.</p>"+
+                            "<a href=\"https://localhost:7280/api/activateuser/id=" + user.Id.ToString() + "\" style=\"background-color: green;color:white;text-decoration: none;border-radius: 20px; \">&nbsp;&nbsp; Activate Account &nbsp;&nbsp;</a></div>";
+                string subject = "Barclays Account Activation";                
+                IF YOU WISH TO USE USER EMAIL ACTIVATION, JUST UNCOMMENT _emailService.sendMail
+                _emailService.sendMail(emailaddress, fullname, subject, htmlmsg);
+                //and comment  user.Isactivated = 1;
+*/    
                 return Ok(new {statuscode = 200, message = "Please check your e-mail inbox and click button activation"});
             }
             catch (AppException ex)

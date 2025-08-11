@@ -7,7 +7,5 @@ namespace core8_nextjs_postgre.Models.dto
     {        
         public string Password { get; set; }
         public DateTime UpdatedAt { get; set; }
-    }
-
-    
+    }    
 }

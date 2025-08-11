@@ -6,7 +6,5 @@ namespace core8_nextjs_postgre.Models
     public class UploadfileModel {
         public int Id { get; set; }
         public IFormFile Profilepic { get; set; }
-
-    }
-    
+    }    
 }
