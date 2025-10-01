@@ -39,24 +39,17 @@ export default function Register() {
         const data =JSON.stringify({ lastname: lastname, firstname: firstname,email: email, mobile: mobile,
           username: username, password: password });
         api.post<Registerdata>("/signup", data)
-        .then((res) => {
+        .then((res: any) => {
             const data: Registerdata = res.data;
-            if (data.statuscode === 200) {
-              setMessage(data.message);
-                return;
-            } else {
               setMessage(data.message);
               window.setTimeout(() => {
                 setMessage('');
               }, 3000);
-              return;
-            }
-          }, (error) => {
-            setMessage(error.message);
+          }, (error: any) => {
+            setMessage(error.response.data.message);
                 window.setTimeout(() => {
                   setMessage('');
                 }, 3000);
-              return;
         });
     }
 

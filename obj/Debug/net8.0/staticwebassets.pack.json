@@ -145,6 +145,10 @@
       "PackagePath": "staticwebassets/users/001.jpg"
     },
     {
+      "Id": "/Users/reynald/My-Programs/DotnetCore/core8_nextjs_postgre/wwwroot/users/003.jpg",
+      "PackagePath": "staticwebassets/users/003.jpg"
+    },
+    {
       "Id": "/Users/reynald/My-Programs/DotnetCore/core8_nextjs_postgre/wwwroot/users/pix.png",
       "PackagePath": "staticwebassets/users/pix.png"
     },

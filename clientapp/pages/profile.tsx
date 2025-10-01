@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import $ from 'jquery';
 import axios from 'axios';
-// import { getCookie } from 'cookies-next/client';
 
 const mfaapi = axios.create({
   baseURL: "https://localhost:7292",
@@ -46,7 +45,6 @@ export default function Profile() {
   const [userid, setUserid] = useState<string>('');
   const [profilepic, setProfilepic] = useState<string>('');
   const [qrcode, setQrcode] = useState<string>('');
-  // const [userfile, setUserfile] = useState<File>();
   const [token, setToken] = useState<string>('');
   const [showsave, setShowsave] = useState<boolean>(false);
 
@@ -72,8 +70,8 @@ export default function Profile() {
         } else {
           setProfilepic('/users/pix.png')
         }
-      },(error) => {        
-        setMessage(error.message);
+      },(error: any) => {        
+        setMessage(error.response.data.message);
         setTimeout(() => {
             setMessage('');
         }, 1000);
@@ -127,8 +125,8 @@ export default function Profile() {
               clearTimeout(timer);
           },800);
         }
-    }, (error) => {
-        setMessage(error.message);
+    }, (error: any) => {
+        setMessage(error.response.data.message);
         let timer: any = setTimeout(() => {
           setMessage('');
             clearTimeout(timer);
@@ -192,8 +190,8 @@ export default function Profile() {
             },3000);
             return;
         }
-    }, (error) => {
-      setMessage(error.message);
+    }, (error: any) => {
+      setMessage(error.response.data.message);
         let timer: any = setTimeout(() => {
           setMessage('');
             clearTimeout(timer);
@@ -225,8 +223,8 @@ export default function Profile() {
             clearTimeout(timer);
           },3000);
         }
-    }, (error) => {
-      setMessage(error.message);
+    }, (error: any) => {
+      setMessage(error.response.data.message);
         let timer: any = setTimeout(() => {
           setMessage('');
             clearTimeout(timer);
@@ -247,8 +245,8 @@ export default function Profile() {
             setMessage('');
             clearTimeout(timer);
         },3000);
-    }, (error) => {
-      setMessage(error.message);            
+    }, (error: any) => {
+      setMessage(error.response.data.message);            
         let timer: any = setTimeout(() => {
           setMessage('');
             clearTimeout(timer);
@@ -298,8 +296,8 @@ export default function Profile() {
             },3000);
             return;
         }
-    }, (error) => {
-      setMessage(error.message);
+    }, (error: any) => {
+      setMessage(error.response.data.message);
         let timer: any = setTimeout(() => {
             setMessage('');
             clearTimeout(timer);

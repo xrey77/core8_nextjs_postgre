@@ -25,7 +25,7 @@ interface Products {
   productPicture: string
 }
 
-const formatNumberWithCommaDecimal = (number: any) => {
+const toDecimal = (number: any) => {
   const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2, // Ensures at least two decimal places
     maximumFractionDigits: 2, // Limits to two decimal places
@@ -40,6 +40,7 @@ const Productlist = (props: any) => {
     let [page, setPage] = useState<number>(1);
     let [totpage, setTotpage] = useState<number>(0);
     let [products, setProducts] = useState<Productdata[]>([]);
+    const [message, setMessage] = useState<string>('');
 
     const fetchProducts = async (pg: any) => {
       api.get<Productdata>(`/api/listproducts/${pg}`)
@@ -49,7 +50,7 @@ const Productlist = (props: any) => {
         setTotpage(data.totpage);
         setPage(data.page);
       }, (error: any) => {
-              console.log(error.message);
+              setMessage(error.response.data.message);
               return;
       });      
     }
@@ -97,7 +98,7 @@ const Productlist = (props: any) => {
     return(
     <div className="container">
             <h1>Products List</h1>
-
+            <div className='text-danger'>{message}</div>
             <table className="table">
             <thead>
                 <tr>
@@ -117,7 +118,7 @@ const Productlist = (props: any) => {
                  <td>{item['descriptions']}</td>
                  <td>{item['qty']}</td>
                  <td>{item['unit']}</td>
-                 <td>&#8369;{formatNumberWithCommaDecimal(item['sellPrice'])}</td>
+                 <td>&#8369;{toDecimal(item['sellPrice'])}</td>
                </tr>
               );
         })}

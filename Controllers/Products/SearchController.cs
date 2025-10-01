@@ -44,10 +44,10 @@ namespace core8_nextjs_postgre.Controllers.Products
                     var model = _mapper.Map<IList<ProductModel>>(products);
                     return Ok(new {products=model});
                 } else {
-                    return Ok(new {statuscode=404, message="No Data found."});
+                    return NotFound(new {statuscode=404, message="No Data found."});
                 }
             } catch(AppException ex) {
-               return Ok(new {statuscode = 404, Message = ex.Message});
+               return BadRequest(new {statuscode = 400, Message = ex.Message});
             }
         }
     }    

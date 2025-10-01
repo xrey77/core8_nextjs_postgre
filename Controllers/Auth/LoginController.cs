@@ -94,7 +94,7 @@ public class LoginController : ControllerBase
             }
             catch (AppException ex)
             {
-                return Ok(new {Message = ex.Message});
+                return BadRequest(new {statuscode=400, Message = ex.Message});
             }
 
     }

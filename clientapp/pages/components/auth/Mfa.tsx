@@ -32,7 +32,6 @@ export default function Mfa() {
         api.post<Mfadata>("/validateotp", data)
         .then((res) => {
             const data: Mfadata = res.data;
-            if (data.statuscode === 200) {
                 setMessage(data.message);
                 setOtpcode('');
                 sessionStorage.setItem("USERNAME", data.username);
@@ -41,14 +40,8 @@ export default function Mfa() {
                   window.location.reload();
                   setDizable(false);
                 }, 3000);
-                return;
-            } else {
-              setMessage(res.data.message);
-              setOtpcode('');
-              return;
-            }
-          }, (error) => {
-               setMessage(error.message);
+          }, (error: any) => {
+               setMessage(error.response.data.message);
                 window.setTimeout(() => {
                   setDizable(false);
                   setMessage('');

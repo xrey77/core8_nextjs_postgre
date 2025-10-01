@@ -72,7 +72,7 @@ public class RegisterController : ControllerBase
             }
             catch (AppException ex)
             {
-                return Ok(new { statuscode = 404, message = ex.Message });
+                return BadRequest(new { statuscode = 400, message = ex.Message });
             }
     }
 }

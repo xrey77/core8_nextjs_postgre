@@ -9,7 +9,7 @@ const api = axios.create({
             'Content-Type': 'application/json'}
 })
 
-const formatNumberWithCommaDecimal = (number: any) => {
+const toDecimal = (number: any) => {
   const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2, // Ensures at least two decimal places
     maximumFractionDigits: 2, // Limits to two decimal places
@@ -36,6 +36,7 @@ const Productsearch = (props: any) => {
     const [prodsearch, setProdsearch] = useState<Products[]>([]);
     const [message, setMessage] = useState<string>('');
     let [searchkey, setSearchkey] = useState<string>('');
+    const [message, stMessage] = useState<string>('');
 
     const getProdsearch = async (event: any) => {
         event.preventDefault();
@@ -43,12 +44,11 @@ const Productsearch = (props: any) => {
         const data = JSON.stringify({ search: searchkey});
 
         api.post<Productdata>("/api/searchproducts",data)
-        .then((res) => {
+        .then((res: any) => {
           const data: Productdata = res.data;
             setProdsearch(data.products);
         }, (error: any) => {
-            // setErrors(error.message);
-            console.log(error.message);
+            setMessage(error.response.data.message);
             return;
         });  
         setMessage('');
@@ -57,7 +57,7 @@ const Productsearch = (props: any) => {
   return (
     <div className="container mb-9">
         <h2>Products Search</h2>
-
+        <div className='text-danger'>{message}</div>
         <form className="row g-3" onSubmit={getProdsearch} autoComplete='off'>
             <div className="col-auto">
               <input type="text" required className="form-control-sm" value={searchkey} onChange={e => setSearchkey(e.target.value)} placeholder="enter Product keyword"/>
@@ -80,7 +80,7 @@ const Productsearch = (props: any) => {
                       <p className="card-text desc-h">{item['descriptions']}</p>
                     </div>
                     <div className="card-footer">
-                      <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{formatNumberWithCommaDecimal(item['sellPrice'])}</strong></p>
+                      <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{toDecimal(item['sellPrice'])}</strong></p>
                     </div>  
                 </div>
                 

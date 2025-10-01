@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "5WDuM9LRbZFqneIT+wj3Vx2TSgsCHETK1m7D3YzApoE=",
+  "Hash": "+apiZrQxjLe8ufWKX9p0ggZCDJ+q/JlEyxW9WDqyLvA=",
   "Source": "core8_nextjs_postgre",
   "BasePath": "_content/core8_nextjs_postgre",
   "Mode": "Default",
@@ -699,6 +699,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/users/001.jpg"
+    },
+    {
+      "Identity": "/Users/reynald/My-Programs/DotnetCore/core8_nextjs_postgre/wwwroot/users/003.jpg",
+      "SourceId": "core8_nextjs_postgre",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/reynald/My-Programs/DotnetCore/core8_nextjs_postgre/wwwroot/",
+      "BasePath": "_content/core8_nextjs_postgre",
+      "RelativePath": "users/003.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/users/003.jpg"
     },
     {
       "Identity": "/Users/reynald/My-Programs/DotnetCore/core8_nextjs_postgre/wwwroot/users/pix.png",

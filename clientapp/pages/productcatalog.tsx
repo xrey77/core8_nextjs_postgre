@@ -25,7 +25,7 @@ interface Products {
   productPicture: string
 }
 
-const formatNumberWithCommaDecimal = (number: any) => {
+const toDecimal = (number: any) => {
   const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2, // Ensures at least two decimal places
     maximumFractionDigits: 2, // Limits to two decimal places
@@ -38,16 +38,17 @@ const formatNumberWithCommaDecimal = (number: any) => {
     let [page, setPage] = useState<number>(1);
     let [prods, setProds] = useState<Products[]>([]);
     let [totpage, setTotpage] = useState<number>(0);
+    const [message, setMessage] = useState<string>('');
 
     const fetchCatalog = async (pg: any) => {
       api.get<Productdata>(`/api/listproducts/${pg}`)
-      .then((res) => {
+      .then((res: any) => {
         const data: Productdata = res.data;
         setProds(data.products);
         setTotpage(data.totpage);
         setPage(data.page);
       }, (error: any) => {
-              console.log(error.message);
+              setMessage(error.response.data.message);
               return;
       });      
     }
@@ -94,7 +95,8 @@ const formatNumberWithCommaDecimal = (number: any) => {
 
     return(
     <div className="container mb-9">
-            <h3 className='text-center'>Products Catalog</h3>
+            <h3 className='text-center'>Products Catalog</h3>            
+            <div className="text-danger">{message}</div>
             <div className="card-group mb-3">
             {prods.map((item) => {
                     return (
@@ -105,7 +107,7 @@ const formatNumberWithCommaDecimal = (number: any) => {
                             <p className="card-text">{item['descriptions']}</p>
                         </div>
                         <div className="card-footer">
-                            <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{formatNumberWithCommaDecimal(item['sellPrice'])}</strong></p>
+                            <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{toDecimal(item['sellPrice'])}</strong></p>
                         </div>  
                     </div>
                 );

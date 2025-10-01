@@ -1,9 +1,7 @@
 'use client'
-// import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUnlock } from '@fortawesome/free-solid-svg-icons'; 
 import React, { useState } from 'react'
-// import { setCookie } from 'cookies-next/client';
 import Mfa from './Mfa';
 import $ from 'jquery';
 import axios from 'axios';
@@ -34,8 +32,7 @@ export default function Login() {
    const [password, setPassword] = useState<string>('');
    const [loginmessage, setLoginMessage] = useState<string>('');
    const [dizable, setDizable] = useState<boolean>(false);
-  //  const router = useRouter();
-
+  
     const submitLogin =  (e: any) => {
         e.preventDefault();
         setDizable(true);
@@ -44,7 +41,6 @@ export default function Login() {
         api.post<Userdata>("/signin", data)
         .then(async (res) => {
             const data: Userdata = res.data;
-            if (data.statuscode === 200) {
                 setLoginMessage(data.message);
                 if (data.qrcodeurl != null) {
                     window.sessionStorage.setItem('USERID',data.id);
@@ -61,17 +57,12 @@ export default function Login() {
                       window.sessionStorage.setItem('USERPIC',data.profilepic);
                       window.location.reload();
                 }
-                return;
-            } else {
-              setLoginMessage(data.message);
                 setTimeout(() => {
                   setDizable(false);
                   setLoginMessage('');
                 }, 3000);
-                return;
-            }
-          }, (error) => {
-                setLoginMessage(error.message);
+          }, (error: any) => {
+                setLoginMessage(error.response.data.message);
                 setTimeout(() => {
                   setDizable(false);
                   setLoginMessage('');

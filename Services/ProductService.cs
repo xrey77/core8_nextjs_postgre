@@ -49,6 +49,9 @@ namespace core8_nextjs_postgre.Services
         public IEnumerable<Product> SearchAll(string key)
         {
             var products = _context.Products.FromSqlRaw("SELECT * FROM products WHERE lower(descriptions) LIKE '%" + key + "%'").ToList();
+            if (products.Count() == 0) {
+               throw new AppException("Product not found");
+            }
             return products;
         }
 

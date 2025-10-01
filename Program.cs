@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using core8_nextjs_postgre.Helpers;
-using core8_nextjs_postgre.Services;
+using core8_nextjs_postgre.Services; 
 
 var builder = WebApplication.CreateBuilder(args);
 

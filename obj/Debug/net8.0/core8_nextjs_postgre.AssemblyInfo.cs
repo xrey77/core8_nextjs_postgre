@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("core8_nextjs_postgre")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f6c9b58625593b4ca9b1dd4e7e6987d14c723f7c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b6ae4ffc8bb255fe9c282d31760bf2941ff46ef")]
 [assembly: System.Reflection.AssemblyProductAttribute("core8_nextjs_postgre")]
 [assembly: System.Reflection.AssemblyTitleAttribute("core8_nextjs_postgre")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

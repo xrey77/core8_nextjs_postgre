@@ -54,7 +54,7 @@ namespace core8_nextjs_postgre.Controllers.Users
                     _userService.ActivateMfa(id, true, imageUrl);
                     return Ok(new {statuscode = 200, message="2-Factor Authenticator has been enabled.", qrcodeurl = imageUrl});
                 } else {
-                    return BadRequest(new {statuscode = 400, message="User not found."});
+                    return NotFound(new {statuscode = 404, message="User not found."});
                 }
 
             } else {

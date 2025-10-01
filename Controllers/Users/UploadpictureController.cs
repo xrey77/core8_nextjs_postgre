@@ -102,11 +102,11 @@ namespace core8_nextjs_postgre.Controllers.Users
                     }
                     catch (Exception ex)
                     {
-                        return Ok(new {statuscode = 200, message =ex.Message});
+                        return BadRequest(new {statuscode = 400, message =ex.Message});
                     }
 
                 }
-                return Ok(new { statuscode = 404, message = "Profile Picture not found."});
+                return NotFound(new { statuscode = 404, message = "Profile Picture not found."});
 
         }
     }
