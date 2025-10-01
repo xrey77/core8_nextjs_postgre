@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/core8_nextjs_postgre.props" />
-</Project>
