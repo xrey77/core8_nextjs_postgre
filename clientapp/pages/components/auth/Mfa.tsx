@@ -24,8 +24,8 @@ export default function Mfa() {
         window.location.href="/";
     }
 
-    const submitMFA = async (e: any) => {
-        e.preventDefault();
+    const submitMFA = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();         
         setDizable(true);
         const idno = window.sessionStorage.getItem('USERID')?.toString();
         const data =JSON.stringify({ id: idno, otp: otpcode });
@@ -40,7 +40,7 @@ export default function Mfa() {
                   window.location.reload();
                   setDizable(false);
                 }, 3000);
-          }, (error: any) => {
+          }, (error) => {
                setMessage(error.response.data.message);
                 window.setTimeout(() => {
                   setDizable(false);
@@ -58,8 +58,8 @@ export default function Mfa() {
     <div className="modal-dialog modal-sm modal-dialog-centered">
         <div className="modal-content">
         <div className="modal-header bg-warning">
-            <h1 className="modal-title fs-5 text-white" id="staticMFALabel">2-Factor Authenticator</h1>
-            <button onClick={closeMFA} type="button" className="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h1 className="modal-title fs-5 text-dark" id="staticMFALabel">2-Factor Authenticator</h1>
+            <button onClick={closeMFA} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div className="modal-body">
             <form onSubmit={submitMFA}>

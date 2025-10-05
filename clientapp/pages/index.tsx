@@ -1,12 +1,8 @@
 'use client'
 import Image from 'next/image';
-import car1 from '../public/images/1.jpeg';
-import car2 from '../public/images/2.jpeg';
-import car3 from '../public/images/3.jpeg';
-import car4 from '../public/images/4.jpeg';
 import Footer from './layout/footer';
 
-export default function Home({}) {
+export default function Home() {
   return (
     <>
       <main className="container-fluid bg-dark">
@@ -15,16 +11,20 @@ export default function Home({}) {
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
           <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <Image src={car1} className="d-block img" alt="..."/>
+            <Image src={'/images/1.jpeg'} width={1280} height={200} className="d-block" alt={"1.jpeg"}/>
           </div>
           <div className="carousel-item">
-            <Image src={car2} className="d-block img" alt="..."/>
+            <Image src={'/images/2.jpeg'} width={1280} height={200} className="d-block" alt={"2.jpeg"}/>
           </div>
           <div className="carousel-item">
-            <Image src={car3} className="d-block img" alt="..."/>
+            <Image src={'/images/3.jpeg'}  width={1280} height={200} className="d-block" alt={"3.jpeg"}/>
+          </div>
+          <div className="carousel-item">
+            <Image src={'/images/4.jpeg'}  width={1280} height={200} className="d-block" alt={"3.jpeg"}/>
           </div>
         </div>
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

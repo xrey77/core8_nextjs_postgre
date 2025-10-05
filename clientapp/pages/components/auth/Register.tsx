@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAddressCard, faUnlock } from '@fortawesome/free-solid-svg-icons'; 
+import { faAddressCard } from '@fortawesome/free-solid-svg-icons'; 
 
 const api = axios.create({
   baseURL: "https://localhost:7292",
@@ -34,18 +34,18 @@ export default function Register() {
       setPassword("");
     }
 
-    const submitRegistration = async (e: any) => {
-        e.preventDefault();
+    const submitRegistration = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); 
         const data =JSON.stringify({ lastname: lastname, firstname: firstname,email: email, mobile: mobile,
           username: username, password: password });
         api.post<Registerdata>("/signup", data)
-        .then((res: any) => {
+        .then((res) => {
             const data: Registerdata = res.data;
               setMessage(data.message);
               window.setTimeout(() => {
                 setMessage('');
               }, 3000);
-          }, (error: any) => {
+          }, (error) => {
             setMessage(error.response.data.message);
                 window.setTimeout(() => {
                   setMessage('');
@@ -104,8 +104,8 @@ export default function Register() {
                 </div>                          
               </div>
             </div>
-            <button type="submit" className="btn btn-danger text-white mx-1">register</button>
-            <button type="reset" className="btn btn-danger text-white">reset</button>
+            <button type="submit" className="btn btn-danger text-white mx-2">register</button>
+            <button type="reset" className="btn btn-danger text-white mx-2">reset</button>
 
         </form>
 

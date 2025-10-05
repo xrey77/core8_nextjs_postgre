@@ -19,7 +19,9 @@ using core8_nextjs_postgre.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
     sqlOptions => sqlOptions.CommandTimeout(120));
@@ -86,19 +88,19 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJWTTokenServices, JWTServiceManage>();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "clientapp/.next";
-            });
 
 var app = builder.Build();
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
-app.UseCors( options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+app.UseCors( 
+    options => options.AllowAnyOrigin()
+        .WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
+        .AllowAnyMethod());
 
 if (app.Environment.IsDevelopment())
 {
@@ -109,7 +111,8 @@ if (app.Environment.IsDevelopment())
     });    
     app.UseHsts();    
 
-} else {
+} 
+else {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
@@ -131,10 +134,11 @@ app.UseStatusCodePages(async context =>
             context.HttpContext.Response.Redirect($"/error?code={context.HttpContext.Response.StatusCode}");
         }
     });
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");    
 
 app.Run();
 

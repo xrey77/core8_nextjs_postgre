@@ -38,12 +38,12 @@ namespace core8_nextjs_postgre.Services
         public User SignupUser(User userdata, string passwd)
         {
             User xusermail = _context.Users.Where(c => c.Email == userdata.Email).FirstOrDefault();
-            if (xusermail != null) {
+            if (xusermail is not null) {
                 throw new AppException("Email Address was already taken...");
             }
 
             User xusername = _context.Users.Where(c => c.UserName == userdata.UserName).FirstOrDefault();
-            if (xusername != null) {
+            if (xusername is not null) {
                 throw new AppException("Username was already taken...");
             }
 
@@ -69,6 +69,7 @@ namespace core8_nextjs_postgre.Services
             userdata.Password = BCrypt.Net.BCrypt.HashPassword(passwd);
             userdata.Profilepic = "https://localhost:7292/users/pix.png";
             userdata.Roles="USER";
+
             _context.Users.Add(userdata);                
             _context.SaveChanges();
             return userdata;
@@ -77,8 +78,8 @@ namespace core8_nextjs_postgre.Services
         public User SignUser(string usrname, string pwd)
         {
            try {
-                    User xuser = _context.Users.Where(c => c.UserName == usrname).FirstOrDefault();
-                    if (xuser != null) {
+                    var xuser =  _context.Users.Where(c => c.UserName == usrname).FirstOrDefault();
+                    if (xuser is not null) {
                         if (!BCrypt.Net.BCrypt.Verify(pwd, xuser.Password)) {
                             throw new AppException("Incorrect Password...");
                         }

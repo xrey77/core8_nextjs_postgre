@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next dev --turbopack",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 next dev --turbopack",
     "build": "next build",
-    "dev": "next start",
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -14,25 +14,33 @@
     "@fortawesome/free-solid-svg-icons": "^7.0.0",
     "@fortawesome/react-fontawesome": "^0.2.3",
     "@popperjs/core": "^2.11.8",
+    "@tailwindcss/postcss": "^4.1.14",
     "@types/axios": "^0.9.36",
-    "@types/jquery": "^2.0.68",
+    "@types/jquery": "^3.5.33",
+    "@types/tailwindcss": "^3.0.11",
     "axios": "^1.11.0",
-    "bootstrap": "^5.3.7",
+    "bootstrap": "^5.3.8",
     "cookies-next": "^6.1.0",
-    "jquery": "^2.2.4",
-    "next": "15.4.6",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "jquery": "^3.7.1",
+    "next": "15.5.4",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@types/bootstrap": "^5.2.10",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
-    "eslint-config-next": "15.4.6",
-    "tailwindcss": "^4",
+    "eslint-config-next": "15.5.4",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0"
   }
 }

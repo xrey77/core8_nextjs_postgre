@@ -50,11 +50,10 @@ public class LoginController : ControllerBase
     }  
 
     [HttpPost("/signin")]
-    public IActionResult signin(UserLogin model) {
+    public IActionResult signin([FromBody]UserLogin model) {
             try {
-                 User xuser = _authService.SignUser(model.Username, model.Password);
-                 if (xuser != null) {
-
+                 var xuser = _authService.SignUser(model.Username, model.Password);
+                 if (xuser is not null) {
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
                     var tokenDescriptor = new SecurityTokenDescriptor
@@ -72,8 +71,6 @@ public class LoginController : ControllerBase
                     };
                     var token = tokenHandler.CreateToken(tokenDescriptor);
                     var tokenString = tokenHandler.WriteToken(token);
-
-
                     return Ok(new { 
                         statuscode = 200,
                         message = "Login Successfull, please wait..",
@@ -88,13 +85,14 @@ public class LoginController : ControllerBase
                         qrcodeurl = xuser.Qrcodeurl,
                         token = tokenString
                         });
+
                  } else {
                     return NotFound(new { statuscode = 404, message = "Username not found.."});
                  }
             }
             catch (AppException ex)
             {
-                return BadRequest(new {statuscode=400, Message = ex.Message});
+                return BadRequest(new {statuscode = 400, message = ex.Message});
             }
 
     }

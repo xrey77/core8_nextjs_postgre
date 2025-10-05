@@ -1,18 +1,18 @@
 'use clinet'
 import Footer from './layout/footer';
 
-const Contactus = (props: any) => {
+const Contactus = () => {
     return(
-        <div className='container'>
-            <div className='card bg-primary border-3 border-white text-light'>
+        <div>
+            <div className='card bg-primary mt-1 mx-2 border-3 border-white text-light'>
                 <div className='card-header border-white'>
                     <h2 className='text-center'>Contact Us</h2>
                 </div>
                 <p className='card-text mx-2 mt-2'>
                 To find contact information for supercars, specifically in the context of the Philippines, you can try contacting Preferred SuperCars directly through their website or by phone. They are located in Miami Beach, Florida. Additionally, you could explore supercar sharing services or look for dealerships or clubs specializing in high-performance vehicles in your area. 
                 </p>                    
-                <h4 className='card-text text-warning mx-2'>
-                Here's a breakdown of how to find contacts:
+                <h4 className="card-text text-warning mx-2">
+                Here&#39;s a breakdown of how to find contacts:
                 </h4>
 
                 <h5 className='card-text text-red mx-2'>
@@ -36,7 +36,7 @@ const Contactus = (props: any) => {
                 </h5>
 
                 <p className='card-text mx-2'>
-                Search online for "supercar dealerships" or "supercar clubs" in your region, such as the Philippines, to find relevant contact information. 
+                Search online for &#34;supercar dealerships&#34; or &#34;supercar clubs&#34; in your region, such as the Philippines, to find relevant contact information. 
                 </p>
 
                 <h5 className='card-text text-red mx-2'>

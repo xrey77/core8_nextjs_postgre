@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUnlock } from '@fortawesome/free-solid-svg-icons'; 
 import React, { useState } from 'react'
 import Mfa from './Mfa';
-import $ from 'jquery';
+import jQuery from 'jquery';
 import axios from 'axios';
 
 const api = axios.create({
@@ -12,7 +12,7 @@ const api = axios.create({
             'Content-Type': 'application/json'}
 })
 
-interface Userdata {
+interface Users {
   id: string,
   firstname: string,
   lastname: string,
@@ -33,22 +33,22 @@ export default function Login() {
    const [loginmessage, setLoginMessage] = useState<string>('');
    const [dizable, setDizable] = useState<boolean>(false);
   
-    const submitLogin =  (e: any) => {
-        e.preventDefault();
+    const submitLogin =  (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();       
         setDizable(true);
         setLoginMessage("Please wait..");
         const data =JSON.stringify({ username: username, password: password });
-        api.post<Userdata>("/signin", data)
+        api.post<Users>("/signin", data)
         .then(async (res) => {
-            const data: Userdata = res.data;
+                const data: Users = res.data;
                 setLoginMessage(data.message);
-                if (data.qrcodeurl != null) {
+                if (data.qrcodeurl !== null) {
                     window.sessionStorage.setItem('USERID',data.id);
                     window.sessionStorage.setItem('TOKEN',data.token);
                     window.sessionStorage.setItem('ROLE',data.roles);
                     window.sessionStorage.setItem('USERPIC',data.profilepic);
-                    $("#loginReset").click();
-                    $("#mfamodal").click();                    
+                    jQuery("#loginReset").trigger('click');
+                    jQuery("#mfamodal").trigger('click')         
                 } else {
                       window.sessionStorage.setItem('USERID',data.id);
                       window.sessionStorage.setItem('USERNAME',data.username);
@@ -61,7 +61,7 @@ export default function Login() {
                   setDizable(false);
                   setLoginMessage('');
                 }, 3000);
-          }, (error: any) => {
+          }, (error) => {
                 setLoginMessage(error.response.data.message);
                 setTimeout(() => {
                   setDizable(false);

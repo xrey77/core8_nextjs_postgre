@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import Footer from './layout/footer';
+import Image from 'next/image';
 
 const api = axios.create({
   baseURL: "https://localhost:7292",
@@ -9,7 +10,7 @@ const api = axios.create({
             'Content-Type': 'application/json'}
 })
 
-const toDecimal = (number: any) => {
+const toDecimal = (number: number) => {
   const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2, // Ensures at least two decimal places
     maximumFractionDigits: 2, // Limits to two decimal places
@@ -18,36 +19,33 @@ const toDecimal = (number: any) => {
   return formatter.format(number);
 };
 
-interface Productdata {
-  totpage: string,
-  page: string,
-  products: Products
+export type Products = {
+  id: number;
+  descriptions: string;
+  qty: number;
+  unit: string;
+  sellPrice: number;
+  productPicture: string;
 }
 
-interface Products {
-  id: number,
-  descriptions: string,  
-  qty: number,
-  unit: string,
-  sellPrice: number,
-  productPicture: string
+export type Productdata = {
+  products: Products[];
 }
-const Productsearch = (props: any) => {
-    const [prodsearch, setProdsearch] = useState<Products[]>([]);
-    const [message, setMessage] = useState<string>('');
-    let [searchkey, setSearchkey] = useState<string>('');
-    const [message, stMessage] = useState<string>('');
 
-    const getProdsearch = async (event: any) => {
+const Productsearch = () => {
+    const [prodsearch, setProdsearch] = useState<any[]>([]);
+    const [message, setMessage] = useState('');
+    const [searchkey, setSearchkey] = useState('');
+
+    async function getProdsearch(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        setMessage("please wait .");
-        const data = JSON.stringify({ search: searchkey});
-
-        api.post<Productdata>("/api/searchproducts",data)
-        .then((res: any) => {
-          const data: Productdata = res.data;
-            setProdsearch(data.products);
-        }, (error: any) => {
+        setMessage("please wait...");
+        const formData = JSON.stringify({ search: searchkey});
+        await api.post<Productdata>("/api/searchproducts", formData)
+        .then((res) => {
+          const jdata: Productdata = res.data;
+            setProdsearch(jdata.products);
+        }, (error) => {
             setMessage(error.response.data.message);
             return;
         });  
@@ -56,25 +54,26 @@ const Productsearch = (props: any) => {
      
   return (
     <div className="container mb-9">
-        <h2>Products Search</h2>
+        <h2 className='text-white'>Products Search</h2>
         <div className='text-danger'>{message}</div>
-        <form className="row g-3" onSubmit={getProdsearch} autoComplete='off'>
+        <form onSubmit={getProdsearch} autoComplete='off'>
             <div className="col-auto">
-              <input type="text" required className="form-control-sm" value={searchkey} onChange={e => setSearchkey(e.target.value)} placeholder="enter Product keyword"/>
+              <input type="text" required value={searchkey} onChange={e => setSearchkey(e.target.value)} className="form-control-sm" placeholder="enter Product keyword"/>
             </div>
             <div className="col-auto">
-              <button type="submit" className="btn btn-primary btn-sm mb-3">search</button>
+              <button type="submit" className="btn btn-primary mt-2 btn-sm mb-3">search</button>
             </div>
-            <div className='searcMsg'>{message}</div>
-
+            <div className='searcMsg text-warning'>{message}</div>
         </form>
         <div className="container mb-9">
           <div className="card-group">
         {prodsearch.map((item) => {
                 return (
-                <div className='col-md-4'>
-                <div key={item.id} className="card mx-3 mt-3">
-                    <img src={item['productPicture']} className="card-img-top product-size" alt=""/>
+                <div key={item['id']}  className='col-md-4'>
+                <div className="card mx-3 mt-3">
+                   <div className="card-img-top product-size">
+                    <Image src={item['productPicture']} fill={true}  alt={""}/>
+                    </div>
                     <div className="card-body">
                       <h5 className="card-title">Descriptions</h5>
                       <p className="card-text desc-h">{item['descriptions']}</p>

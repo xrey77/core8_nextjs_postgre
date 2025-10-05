@@ -3,8 +3,8 @@ import Footer from './layout/footer';
 
 const Aboutus = () => {
     return(
-    <div className="container-fluid">
-    <div className="card border border-2 mx-5">
+    <div>
+    <div className="card border-3 mt-1 mx-5">
         <div className="card-header bg-success border-white">
             <h2 className="text-center text-light">About Us</h2>
         </div>

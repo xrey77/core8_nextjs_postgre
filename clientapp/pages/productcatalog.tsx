@@ -1,19 +1,19 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import Link from 'next/link';
 import axios from 'axios';
 import Footer from './layout/footer';
+import Image from 'next/image';
 
 const api = axios.create({
   baseURL: "https://localhost:7292",
   headers: {'Accept': 'application/json',
-            'Content-Type': 'application/json'}
+            'Content-Type': 'image/png'}
 })
 
 interface Productdata {
-  totpage: string,
-  page: string,
-  products: Products
+  totpage: number,
+  page: number,
+  products: Products[]
 }
 
 interface Products {
@@ -25,7 +25,7 @@ interface Products {
   productPicture: string
 }
 
-const toDecimal = (number: any) => {
+const toDecimal = (number: number) => {
   const formatter = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2, // Ensures at least two decimal places
     maximumFractionDigits: 2, // Limits to two decimal places
@@ -34,93 +34,105 @@ const toDecimal = (number: any) => {
   return formatter.format(number);
 };
 
- const Productcatalog = (props: any) => {
-    let [page, setPage] = useState<number>(1);
-    let [prods, setProds] = useState<Products[]>([]);
-    let [totpage, setTotpage] = useState<number>(0);
+ const Productcatalog = () => {
+    const [page, setPage] = useState(1);
+    const [prods, setProds] = useState<Products[]>([]);
+    const [totpage, setTotpage] = useState(0);
     const [message, setMessage] = useState<string>('');
 
-    const fetchCatalog = async (pg: any) => {
-      api.get<Productdata>(`/api/listproducts/${pg}`)
-      .then((res: any) => {
-        const data: Productdata = res.data;
-        setProds(data.products);
-        setTotpage(data.totpage);
-        setPage(data.page);
-      }, (error: any) => {
-              setMessage(error.response.data.message);
-              return;
+    const fetchCatalog = async (pg: number) => {
+      setMessage('please wait...');
+      await api.get<Productdata>(`/api/listproducts/${pg}`)
+      .then((res) => {
+        const jdata: Productdata = res.data;
+        setProds(jdata.products);
+        setTotpage(jdata.totpage);
+        setPage(jdata.page);
+      }, (error) => {
+        if (error.message !== '') {
+          setMessage(error.response.data.message);
+        } else {
+          setMessage(error.message);
+        }
       });      
+
     }
 
     useEffect(() => {
       fetchCatalog(page)
-    },[page]);
+        setMessage('');
+    },[page, totpage, prods]);
 
-    const firstPage = (event: any) => {
-        event.preventDefault();    
-        page = 1;
-        setPage(page);
-        fetchCatalog(page);
+    function firstPage() {
+        let pg = page;
+        pg = 1;
+        setPage(pg);
+        fetchCatalog(pg);
         return;    
       }
     
-      const nextPage = (event: any) => {
-        event.preventDefault();    
+      function nextPage() {
         if (page === totpage) {
             return;
         }
-        setPage(page++);
-        fetchCatalog(page);
+        let pg = page;
+        pg++;
+        setPage(pg);
+        fetchCatalog(pg);
         return;
       }
     
-      const prevPage = (event: any) => {
-        event.preventDefault();    
+      function prevPage() {
         if (page === 1) {
           return;
           }
-          setPage(page--);
-          fetchCatalog(page);
+          let pg = page;
+          pg--;
+          setPage(pg);
+          fetchCatalog(pg);
           return;    
       }
     
-      const lastPage = (event: any) => {
-        event.preventDefault();
-        page = totpage;
-        setPage(page);
-        fetchCatalog(page);
+      function lastPage() {
+        setPage(totpage);
+        fetchCatalog(totpage);
         return;    
       }
 
     return(
     <div className="container mb-9">
-            <h3 className='text-center'>Products Catalog</h3>            
-            <div className="text-danger">{message}</div>
+            <h3 className='text-white text-center'>Products Catalog</h3>            
+            <div className="text-center text-warning">{message}</div>
             <div className="card-group mb-3">
             {prods.map((item) => {
                     return (
-                    <div key={item.id} className="card">
-                        <img src={item['productPicture']} className="card-img-top" alt=""/>
-                        <div className="card-body">
+                      <div key={item.id} className='col-md-4'>
+                      <div className="card mx-3 mt-3">
+                          <div className="card-img-top">
+                            <Image src={item['productPicture']} fill={true} alt={'products'}/>
+                          </div>
+                          <div className="card-body">
                             <h5 className="card-title">Descriptions</h5>
-                            <p className="card-text">{item['descriptions']}</p>
-                        </div>
-                        <div className="card-footer">
+                            <p className="card-text desc-h">{item['descriptions']}</p>
+                          </div>
+                          <div className="card-footer">
                             <p className="card-text text-danger"><span className="text-dark">PRICE :</span>&nbsp;<strong>&#8369;{toDecimal(item['sellPrice'])}</strong></p>
-                        </div>  
-                    </div>
-                );
+                          </div>  
+                      </div>
+                      
+                      </div>
+
+                      );
             })}
           </div>    
 
         <div className='container'>
         <nav aria-label="Page navigation example">
         <ul className="pagination">
-          <li className="page-item"><Link onClick={lastPage} className="page-link" href="/#">Last</Link></li>
-          <li className="page-item"><Link onClick={prevPage} className="page-link" href="/#">Previous</Link></li>
-          <li className="page-item"><Link onClick={nextPage} className="page-link" href="/#">Next</Link></li>
-          <li className="page-item"><Link onClick={firstPage} className="page-link" href="/#">First</Link></li>
+          <li className="page-item"><button type="button" onClick={lastPage} className="page-link">Last</button></li>
+          <li className="page-item"><button type="button" onClick={prevPage} className="page-link">Previous</button></li>
+          <li className="page-item"><button type="button" onClick={nextPage} className="page-link">Next</button></li>
+          <li className="page-item"><button type="button" onClick={firstPage} className="page-link">First</button></li>
           <li className="page-item page-link text-danger">Page&nbsp;{page} of&nbsp;{totpage}</li>
         </ul>
       </nav>

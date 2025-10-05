@@ -59,11 +59,11 @@ namespace core8_nextjs_postgre.Services
 
         public User GetById(int id)
         {
-                var user = _context.Users.Find(id);
-                if (user == null) {
-                    throw new AppException("User does'not exists....");
-                }
-                return user;
+            var user = _context.Users.Find(id);
+            if (user is null) {
+                throw new AppException("User does'not exists....");
+            }
+            return user;
         }
 
         public void UpdateProfile(User userParam)
@@ -94,7 +94,7 @@ namespace core8_nextjs_postgre.Services
         public void UpdatePassword(User userParam, string password = null)
         {
             var user = _context.Users.Find(userParam.Id);
-            if (user == null)
+            if (user is null)
                 throw new AppException("User not found");
 
             if (!string.IsNullOrWhiteSpace(userParam.Password))
@@ -112,7 +112,7 @@ namespace core8_nextjs_postgre.Services
         public void ActivateMfa(int id, bool opt, string qrcode_url)
         {
            var user = _context.Users.Find(id);
-            if (user != null)
+            if (user is not null)
             {
                 if (opt == true ) {
 
@@ -130,7 +130,7 @@ namespace core8_nextjs_postgre.Services
         public void UpdatePicture(int id, string file)
         {
             var user = _context.Users.Find(id);
-            if (user != null)
+            if (user is not null)
             {
                 user.Profilepic = file;
                 _context.Users.Update(user);
@@ -151,7 +151,7 @@ namespace core8_nextjs_postgre.Services
                 throw new AppException("Account is alread activated.");
             }
             user.Isactivated = 1;
-            if (user == null)
+            if (user is null)
             {
                 throw new AppException("User not found");
             }
@@ -162,7 +162,7 @@ namespace core8_nextjs_postgre.Services
         public int SendEmailToken(string email)
         {
            var user =  _context.Users.AsQueryable().FirstOrDefault(c => c.Email == email);
-           if (user == null) {
+           if (user is null) {
                 throw new AppException("Email Address not found...");
            }
             var etoken = EmailToken(user.Mailtoken);
@@ -186,7 +186,7 @@ namespace core8_nextjs_postgre.Services
            var etoken = EmailToken(xuser.Mailtoken);
 
 
-            if (xuser == null) {
+            if (xuser is null) {
                 throw new AppException("Email Address not found...");
             }           
             if (xuser.UserName != userParam.UserName)

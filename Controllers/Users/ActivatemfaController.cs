@@ -47,7 +47,7 @@ namespace core8_nextjs_postgre.Controllers.Users
                 var user = _userService.GetById(id);
                 if(user != null) {
                     QRCode qrimageurl = new QRCode();
-                    var fullname = user.FirstName + " " + user.LastName;
+                    var fullname = "SUPER CAR INC.";
                     TwoFactorAuthenticator twoFactor = new TwoFactorAuthenticator();
                     var setupInfo = twoFactor.GenerateSetupCode(fullname, user.Email, user.Secretkey, false, 3);
                     var imageUrl = setupInfo.QrCodeSetupImageUrl;

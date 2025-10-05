@@ -81,7 +81,9 @@
 
 html,
 body {
+  background-color: black;
   max-width: 100vw;
+  margin-bottom: 50px !important;
   overflow-x: hidden;
 }
 
@@ -140,7 +142,17 @@ a {
   width: 200px;
   height: 200px;
   float: right;
-  opacity: 0.2;
+  opacity: 0.6;
+}
+
+.cb-border {
+  border: 3px inset #3a3737; 
+  border-color: rgb(79, 67, 67);  
+}
+.input-border {
+  border-width: 2px;
+  border-color: rgb(185, 230, 236);
+  background-color: rgb(217, 223, 223);
 }
 
 .qrcode2 {
@@ -159,7 +171,7 @@ a {
 
 .carousel-inner .carousel-item img {
   max-width: 100% !important;
-  height: 550px !important;
+  height: 450px !important;
   border-radius: 20px;
   object-fit: cover;
   border-radius: 20px;
@@ -172,7 +184,7 @@ a {
   width: 30px; 
   height: 30px!important;
   padding: 0;
-  margin-top: -110px!important;
+  margin-top: -50px!important;
   margin-right: 3px;
   margin-left: 3px;
   text-indent: -999px;
@@ -210,25 +222,42 @@ a {
   height: 50px !important;
 }
 .card-body {
-  width: 350px !important;
+  width: 100% !important;
 }
 .card-size {
   max-width: 500px !important;
 }
+
+.card-img-top {
+  position: relative;
+  margin: 0 auto;
+  top: 10px !important;
+  max-width: 100%! important;
+  width: 90% !important;
+  height: 40vh !important;
+}
+
 
 #offcanvasMenu {
   max-width: 50%!important;
 }
 
 .user {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
+  margin-left: -100% !important;
   border-radius: 50%;
 }
 
+.user-pix-box {
+  position: relative;  
+  width: 150px !important;
+  height: 150px !important;
+}
 .userprofile {
-  width: 150px;
-  height: auto;
+  position: relative;
+  width: 150px !important;
+  height: 150px !important;
   border-radius: 5%; 
 }
 
@@ -246,6 +275,9 @@ a {
   color: yellow;
 }
 
+.xtop {
+  margin-top: -10px;
+}
 
 @media (max-width: 991.98px) {
   .carousel-inner .carousel-item img {
@@ -257,3 +289,9 @@ a {
   }
   
  }
+
+.btn-sm {
+  border-width: 1px;  
+  border-color: white !important;
+  color: white !important;
+}

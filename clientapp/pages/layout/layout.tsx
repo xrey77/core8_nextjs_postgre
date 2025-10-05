@@ -1,8 +1,6 @@
 'use client'
 import React from 'react';
-import "@fortawesome/fontawesome-svg-core/styles.css";
-        import { config } from "@fortawesome/fontawesome-svg-core";
-        config.autoAddCss = false; // Prevent Font Awesome from adding its own CSS
+import BootstrapClient from '../components/BootstrapClient';
 import Header from './header'
 
 
@@ -15,6 +13,7 @@ export default function RootLayout({
     <>
       <Header />
         <main>{children}</main>
+          <BootstrapClient />        
     </>
     );
 }
