@@ -61,8 +61,12 @@ export default function Login() {
                   setDizable(false);
                   setLoginMessage('');
                 }, 3000);
-          }, (error) => {
-                setLoginMessage(error.response.data.message);
+          }, (error: any) => {
+                if (error.response) {
+                  setLoginMessage(error.response.data.message);
+                } else {
+                  setLoginMessage(error.message);
+                }
                 setTimeout(() => {
                   setDizable(false);
                   setLoginMessage('');

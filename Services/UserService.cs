@@ -85,8 +85,8 @@ namespace core8_nextjs_postgre.Services
                 user.Mobile = userParam.Mobile;
             }
 
-            DateTime now = DateTime.Now;
-            user.UpdatedAt = now;
+            // DateTime now = DateTime.Now;
+            // user.UpdatedAt = now;
             _context.Users.Update(user);
             _context.SaveChanges();            
         }
@@ -102,8 +102,8 @@ namespace core8_nextjs_postgre.Services
                  user.Password = BCrypt.Net.BCrypt.HashPassword(userParam.Password);
 
             }
-            DateTime now = DateTime.Now;
-            user.UpdatedAt = now;
+            // DateTime now = DateTime.Now;
+            // user.UpdatedAt = now;
             _context.Users.Update(user);
             _context.SaveChanges();            
         }

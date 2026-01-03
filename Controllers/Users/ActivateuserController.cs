@@ -49,11 +49,11 @@ namespace core8_nextjs_postgre.Controllers.Users
                    _userService.ActivateUser(id);
                     //SEND ACTIONVATION CONFIRMATION
                   _emailService.sendMail(email, fullname, subj, htmlmsg);
-                return Ok(new {statuscode = 200, message = "Your Account is activated successfully."});
+                return Ok(new { message = "Your Account is activated successfully."});
             }
             catch (AppException ex)
             {
-                return BadRequest(new { statuscode = 400, message = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
         }
 

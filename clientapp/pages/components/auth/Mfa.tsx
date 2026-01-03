@@ -40,8 +40,12 @@ export default function Mfa() {
                   window.location.reload();
                   setDizable(false);
                 }, 3000);
-          }, (error) => {
-               setMessage(error.response.data.message);
+          }, (error: any) => {
+                if (error.response) {
+                    setMessage(error.response.data.message);
+                } else {
+                    setMessage(error.message);
+                }
                 window.setTimeout(() => {
                   setDizable(false);
                   setMessage('');

@@ -27,10 +27,9 @@ export type Productdata = {
 
 const toDecimal = (number: number) => {
   const formatter = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 2, // Ensures at least two decimal places
-    maximumFractionDigits: 2, // Limits to two decimal places
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
-  // Format the number
   return formatter.format(number);
 };
 
@@ -50,14 +49,14 @@ const Productlist = () => {
         setPage(jdata.page);
         setTotpage(jdata.totpage);
       }, (error) => {
-          if (error.message === null) {
-            setMessage(error.message);
+          if (error.response) {
+              setMessage(error.response.data.message);
           } else {
-              // setMessage(error.response.data.message);
+            setMessage(error.message);
           }
-              setTimeout(() => {
-                setMessage('');
-              }, 3000);
+          setTimeout(() => {
+            setMessage('');
+          }, 3000);
       });      
     }
 

@@ -44,11 +44,11 @@ namespace core8_nextjs_postgre.Controllers.Users
             try
             {
                _userService.Delete(id);
-            return Ok(new {statuscode=200, message="Deleted Successfully."});
+            return Ok(new {message="Deleted Successfully."});
            }
             catch (AppException ex)
             {
-                return BadRequest(new {statuscode=400, message = ex.Message });
+                return BadRequest(new {message = ex.Message });
             }
 
         }

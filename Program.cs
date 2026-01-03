@@ -1,3 +1,5 @@
+        // "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+
 using System;
 using System.IO;
 using System.Text;
@@ -23,9 +25,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-    sqlOptions => sqlOptions.CommandTimeout(120));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))            
+           .UseSnakeCaseNamingConvention(); // Automatically maps Id -> id
 });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options => {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
+// builder.Services.AddDbContext<ApplicationDbContext>(options => {
+//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+//     sqlOptions => sqlOptions.CommandTimeout(120));
+// });
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -98,7 +110,11 @@ app.UseAuthorization();
 app.UseStaticFiles();
 app.UseCors( 
     options => options.AllowAnyOrigin()
-        .WithOrigins("http://localhost:3000")
+        .WithOrigins("http://localhost:3000",
+                     "http://localhost:4321",
+                     "http://localhost:5173",
+                     "http://localhost:8080",
+                     "http://localhost:4200")
         .AllowAnyHeader()
         .AllowAnyMethod());
 

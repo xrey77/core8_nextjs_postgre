@@ -52,11 +52,11 @@ namespace core8_nextjs_postgre.Controllers.Users
             try
             {
                 _userService.UpdateProfile(user);
-                return Ok(new {statuscode=200, message="Your profile has been updated.",user = model});
+                return Ok(new { message="Your profile has been updated.",user = model});
             }
             catch (AppException ex)
             {
-                return BadRequest(new { statuscode = 400, message = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
         }
 

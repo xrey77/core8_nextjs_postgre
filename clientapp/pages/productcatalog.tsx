@@ -27,10 +27,9 @@ interface Products {
 
 const toDecimal = (number: number) => {
   const formatter = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 2, // Ensures at least two decimal places
-    maximumFractionDigits: 2, // Limits to two decimal places
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
-  // Format the number
   return formatter.format(number);
 };
 
@@ -48,7 +47,7 @@ const toDecimal = (number: number) => {
         setProds(jdata.products);
         setTotpage(jdata.totpage);
         setPage(jdata.page);
-      }, (error) => {
+      }, (error: any) => {
         if (error.message !== '') {
           setMessage(error.response.data.message);
         } else {

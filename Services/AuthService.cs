@@ -17,6 +17,7 @@ namespace core8_nextjs_postgre.Services
     public interface IAuthService {
         User SignupUser(User userdata, string passwd);
         User SignUser(string usrname, string pwd);
+        Role getRolename(int id);
     }
 
     public class AuthService : IAuthService
@@ -68,11 +69,15 @@ namespace core8_nextjs_postgre.Services
             userdata.Secretkey = secretkey.ToUpper();             
             userdata.Password = BCrypt.Net.BCrypt.HashPassword(passwd);
             userdata.Profilepic = "https://localhost:7292/users/pix.png";
-            userdata.Roles="USER";
-
+            userdata.RolesId = 2;
             _context.Users.Add(userdata);                
             _context.SaveChanges();
             return userdata;
+        }
+
+        public Role getRolename(int id) {
+            var role = _context.Roles.Find(id);
+            return role;
         }
 
         public User SignUser(string usrname, string pwd)

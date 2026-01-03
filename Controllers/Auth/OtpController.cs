@@ -49,12 +49,12 @@ namespace core8_nextjs_postgre.Controllers.Auth
                     bool isValid = twoFactor.ValidateTwoFactorPIN(secret, otp , false);
                     if (isValid)
                     {
-                        return Ok(new { statuscode=200, message = "OTP validation successfull, pls. wait.", username=user.UserName});
+                        return Ok(new { message = "OTP validation successfull, pls. wait.", username=user.UserName});
                     } 
                 }
-                return NotFound(new { statuscode=404, message = "Invalid OTP Code." });
+                return NotFound(new { message = "Invalid OTP Code." });
             }catch(Exception ex) {
-                return BadRequest(new { statuscode=400, message = ex.Message});
+                return BadRequest(new { message = ex.Message});
             }
         }
     }

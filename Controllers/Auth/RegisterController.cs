@@ -46,7 +46,8 @@ public class RegisterController : ControllerBase
 
     [HttpPost("/signup")]
     public IActionResult signup(UserRegister model) {
-        DateTime now = DateTime.Now;
+//        DateTime now = DateTime.Now;
+        // DateTime.UtcNow now = DateTime.UtcNow;
         var user = _mapper.Map<User>(model);
             try
             {
@@ -55,8 +56,8 @@ public class RegisterController : ControllerBase
                 user.Email = model.Email;
                 user.Mobile = model.Mobile;
                 user.UserName = model.Username;
-                user.CreatedAt = now;
-                user.Isactivated = 1;                
+                // user.UpdatedAt = now;
+                user.Isactivated = 2;                
                 _authService.SignupUser(user, model.Password);
                 string fullname = model.Firstname + " " + model.Lastname;
                 string emailaddress = model.Email;
@@ -68,11 +69,11 @@ public class RegisterController : ControllerBase
                 _emailService.sendMail(emailaddress, fullname, subject, htmlmsg);
                 //and comment  user.Isactivated = 1;
 */    
-                return Ok(new {statuscode = 200, message = "Please check your e-mail inbox and click button activation"});
+                return Ok(new {message = "Please check your e-mail inbox and click button activation"});
             }
             catch (AppException ex)
             {
-                return BadRequest(new { statuscode = 400, message = ex.Message });
+                return BadRequest(new {message = ex.Message });
             }
     }
 }

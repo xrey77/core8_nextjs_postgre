@@ -72,8 +72,12 @@ export default function Profile() {
         } else {
           setProfilepic('/users/pix.png')
         }
-      },(error) => {        
-        setMessage(error.response.data.message);
+      },(error: any) => {        
+        if (error.response) {
+          setMessage(error.response.data.message);
+        } else {
+          setMessage(error.message);
+        }
         setTimeout(() => {
             setMessage('');
         }, 1000);
@@ -125,8 +129,12 @@ export default function Profile() {
             setMessage('');
           },800);
         }
-    }, (error) => {
-        setMessage(error.response.data.message);
+    }, (error: any) => {
+        if (error.response) {
+          setMessage(error.response.data.message);
+        } else {
+          setMessage(error.message);
+        }
         setTimeout(() => {
           setMessage('');
         },3000);
@@ -191,8 +199,12 @@ export default function Profile() {
               },3000);
               return;
           }
-      }, (error) => {
-        setMessage(error.response.data.message);
+      }, (error: any) => {
+          if (error.response) {
+            setMessage(error.response.data.message);
+          } else {
+            setMessage(error.message);
+          }        
           setTimeout(() => {
             setMessage('');
           },3000);
@@ -213,8 +225,12 @@ export default function Profile() {
               setQrcode(data.qrcodeurl);
               setMessage('');
           },3000);
-    }, (error) => {
-      setMessage(error.response.data.message);
+    }, (error: any) => {
+        if (error.response) {
+          setMessage(error.response.data.message);
+        } else {
+          setMessage(error.message);
+        }
         setTimeout(() => {
           setMessage('');
         },3000);
@@ -234,8 +250,12 @@ export default function Profile() {
             setQrcode('/images/qrcode.png');
             setMessage('');
         },3000);
-    }, (error) => {
-      setMessage(error.response.data.message);            
+    }, (error: any) => {
+        if (error.response) {
+          setMessage(error.response.data.message);
+        } else {
+          setMessage(error.message);
+        }
         setTimeout(() => {
           setMessage('');
         },3000);
@@ -280,8 +300,12 @@ export default function Profile() {
             },3000);
             return;
         }
-    }, (error) => {
-      setMessage(error.response.data.message);
+    }, (error: any) => {
+        if (error.response) {
+          setMessage(error.response.data.message);
+        } else {
+          setMessage(error.message);
+        }    
         setTimeout(() => {
             setMessage('');
         },3000);

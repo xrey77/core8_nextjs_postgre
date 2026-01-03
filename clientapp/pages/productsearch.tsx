@@ -12,10 +12,9 @@ const api = axios.create({
 
 const toDecimal = (number: number) => {
   const formatter = new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 2, // Ensures at least two decimal places
-    maximumFractionDigits: 2, // Limits to two decimal places
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
-  // Format the number
   return formatter.format(number);
 };
 
@@ -45,8 +44,12 @@ const Productsearch = () => {
         .then((res) => {
           const jdata: Productdata = res.data;
             setProdsearch(jdata.products);
-        }, (error) => {
-            setMessage(error.response.data.message);
+        }, (error: any) => {
+            if (error.response) {
+              setMessage(error.response.data.message);
+            } else {
+              setMessage(error.message);
+            }
             return;
         });  
         setMessage('');

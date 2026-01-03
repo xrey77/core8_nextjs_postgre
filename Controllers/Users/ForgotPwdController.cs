@@ -52,11 +52,11 @@ namespace core8_nextjs_postgre.Controllers.Users
             try
             {
                 _userService.ChangePassword(user);
-                return Ok(new {statuscode = 200, message = "Password successfully changed.." });
+                return Ok(new { message = "Password successfully changed.." });
             }
             catch (AppException ex)
             {
-                return BadRequest(new { statuscode = 400, message = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -70,7 +70,7 @@ namespace core8_nextjs_postgre.Controllers.Users
            }
             catch (AppException ex)
             {
-                return BadRequest(new { statuscode = 400, message = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
 
         }
