@@ -8,11 +8,10 @@ using core8_nextjs_postgre.Models;
 namespace core8_nextjs_postgre.Services
 {
     public interface IProductService {
-        IEnumerable<Product> ListAll(int page);
-        IEnumerable<Product> SearchAll(string key);
-        IEnumerable<Product> Dataset();
-
-        int TotPage();
+        Task<IEnumerable<Product>> ListAll(int page);
+        Task<IEnumerable<Product>> SearchAll(string key);
+        Task<IEnumerable<Product>> Dataset();
+        Task<int> TotPage();
     }
 
     public class ProductService : IProductService
@@ -26,38 +25,40 @@ namespace core8_nextjs_postgre.Services
             _context = context;
             _appSettings = appSettings.Value;
         }        
-        public int TotPage() {
-            var perpage = 5;
-            var totrecs = _context.Products.Count();
-            int totpage = (int)Math.Ceiling((float)(totrecs) / perpage);
-            return totpage;
+        public async Task<int> TotPage() {
+            var perPage = 5;
+            var totRecs = await _context.Products.CountAsync();         
+            int totPage = (int)Math.Ceiling((float)totRecs / perPage);
+            return totPage;
         }
-        public IEnumerable<Product> ListAll(int page)
-        {
-            var perpage = 5;
-            var offset = (page -1) * perpage;
 
-            var products = _context.Products                                
+        public async Task<IEnumerable<Product>> ListAll(int page)
+        {
+            var perPage = 5;
+            var offset = (page - 1) * perPage;
+
+            // Use ToListAsync() for async execution
+            var products = await _context.Products                                
                 .OrderBy(b => b.Id)
                 .Skip(offset)
-                .Take(perpage)
-                .ToList();
+                .Take(perPage)
+                .ToListAsync();
 
-            return products;
+            return products;            
         }
 
-        public IEnumerable<Product> SearchAll(string key)
+        public async Task<IEnumerable<Product>> SearchAll(string key)
         {
-            var products = _context.Products.FromSqlRaw("SELECT * FROM products WHERE lower(descriptions) LIKE '%" + key + "%'").ToList();
+            var products = await _context.Products.FromSqlRaw("SELECT * FROM products WHERE lower(descriptions) LIKE '%" + key + "%'").ToListAsync();
             if (products.Count() == 0) {
                throw new AppException("Product not found");
             }
             return products;
         }
 
-        public IEnumerable<Product> Dataset()
+        public async Task<IEnumerable<Product>> Dataset()
         {
-            var products = _context.Products.ToList();
+            var products = await _context.Products.ToListAsync();
             return products;
         }
     }

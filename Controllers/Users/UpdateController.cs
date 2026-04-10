@@ -18,20 +18,19 @@ namespace core8_nextjs_postgre.Controllers.Users
     public class UpdateController : ControllerBase {
         
     private IUserService _userService;
-
     private IMapper _mapper;
     private readonly IConfiguration _configuration;  
-
     private readonly IWebHostEnvironment _env;
-
     private readonly ILogger<UpdateController> _logger;
+    private readonly IRabbitMQProducer _rabbitMQProducer;
 
     public UpdateController(
         IConfiguration configuration,
         IWebHostEnvironment env,
         IUserService userService,
         IMapper mapper,
-        ILogger<UpdateController> logger
+        ILogger<UpdateController> logger,
+        IRabbitMQProducer rabbitMQProducer
         )
     {
         _configuration = configuration;  
@@ -39,11 +38,12 @@ namespace core8_nextjs_postgre.Controllers.Users
         _mapper = mapper;
         _logger = logger;
         _env = env;        
+        _rabbitMQProducer = rabbitMQProducer;
     }  
 
 
         [HttpPatch("/api/updateprofile/{id}")]        
-        public IActionResult updateUser(int id, [FromBody]UserUpdate model) {
+        public async Task<IActionResult> updateUser(int id, [FromBody]UserUpdate model) {
             var user = _mapper.Map<User>(model);
             user.Id = id;
             user.FirstName = model.Firstname;
@@ -51,7 +51,29 @@ namespace core8_nextjs_postgre.Controllers.Users
             user.Mobile = model.Mobile;
             try
             {
-                _userService.UpdateProfile(user);
+                await _userService.UpdateProfile(user);
+
+                // START - Publish to RabbitMQ=============
+                try
+                {
+                    await _rabbitMQProducer.PublishUserRegisteredEvent(user);
+                }
+                catch (UnauthorizedAccessException ex) when (ex.Message.Contains("RabbitMQ credentials"))
+                {
+                    return StatusCode(500, new { 
+                        success = false, 
+                        message = $"Messaging password service configuration error. Please contact administrator, {ex.Message}" 
+                    });
+                }
+                catch (AppException ex)
+                {
+                    return StatusCode(500, new { 
+                        success = false, 
+                        message = $"An unexpected error occurred, {ex.Message}" 
+                    });
+                }
+                // END - Publish to RabbitMQ==============
+
                 return Ok(new { message="Your profile has been updated.",user = model});
             }
             catch (AppException ex)

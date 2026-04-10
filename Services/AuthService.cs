@@ -3,10 +3,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks; // Added for Task
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore; // CRITICAL: Added for async EF Core extensions
 using core8_nextjs_postgre.Entities;
 using core8_nextjs_postgre.Helpers;
 using core8_nextjs_postgre.Models;
@@ -15,41 +17,43 @@ using core8_nextjs_postgre.Models.dto;
 namespace core8_nextjs_postgre.Services
 {    
     public interface IAuthService {
-        User SignupUser(User userdata, string passwd);
-        User SignUser(string usrname, string pwd);
-        Role getRolename(int id);
+        Task<User> SignupUser(User userdata, string passwd);
+        Task<User> SignUser(string usrname, string pwd);
+        Task<Role> getRolename(int id);
     }
 
     public class AuthService : IAuthService
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly AppSettings _appSettings;
+        private readonly IConfiguration _config; // Inject this instead of building manually
 
-         IConfiguration config = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json")
-        .AddEnvironmentVariables()
-        .Build();
-
-        public AuthService(ApplicationDbContext context,IOptions<AppSettings> appSettings)
+        public AuthService(
+            ApplicationDbContext context,
+            IOptions<AppSettings> appSettings,
+            IConfiguration config) // Added IConfiguration via DI
         {
             _context = context;
             _appSettings = appSettings.Value;
+            _config = config; 
         }
 
-        public User SignupUser(User userdata, string passwd)
+        public async Task<User> SignupUser(User userdata, string passwd)
         {
-            User xusermail = _context.Users.Where(c => c.Email == userdata.Email).FirstOrDefault();
+            // Changed .FirstOrDefault() to .FirstOrDefaultAsync()
+            User xusermail = await _context.Users.FirstOrDefaultAsync(c => c.Email == userdata.Email);
             if (xusermail is not null) {
                 throw new AppException("Email Address was already taken...");
             }
 
-            User xusername = _context.Users.Where(c => c.UserName == userdata.UserName).FirstOrDefault();
+            // Changed .FirstOrDefault() to .FirstOrDefaultAsync()
+            User xusername = await _context.Users.FirstOrDefaultAsync(c => c.UserName == userdata.UserName);
             if (xusername is not null) {
                 throw new AppException("Username was already taken...");
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var xkey = config["Jwt:Key"];
+            var xkey = _config["Jwt:Key"];
             var key = Encoding.ASCII.GetBytes(xkey);
 
             // CREATE SECRET KEY FOR USER TOKEN===============
@@ -59,7 +63,6 @@ namespace core8_nextjs_postgre.Services
                 {
                     new Claim(ClaimTypes.Name, userdata.Email)
                 }),
-                // Expires = DateTime.UtcNow.AddDays(7),
                 Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -68,35 +71,40 @@ namespace core8_nextjs_postgre.Services
 
             userdata.Secretkey = secretkey.ToUpper();             
             userdata.Password = BCrypt.Net.BCrypt.HashPassword(passwd);
-            userdata.Profilepic = "https://localhost:7292/users/pix.png";
+            userdata.Profilepic = "pix.png";
             userdata.RolesId = 2;
-            _context.Users.Add(userdata);                
-            _context.SaveChanges();
+            
+            // Changed to AddAsync and SaveChangesAsync
+            await _context.Users.AddAsync(userdata);                
+            await _context.SaveChangesAsync();
+            
             return userdata;
         }
 
-        public Role getRolename(int id) {
-            var role = _context.Roles.Find(id);
+        public async Task<Role> getRolename(int id) {
+            // Changed .Find() to .FindAsync()
+            var role = await _context.Roles.FindAsync(id);
             return role;
         }
 
-        public User SignUser(string usrname, string pwd)
+        public async Task<User> SignUser(string usrname, string pwd)
         {
-           try {
-                    var xuser =  _context.Users.Where(c => c.UserName == usrname).FirstOrDefault();
-                    if (xuser is not null) {
-                        if (!BCrypt.Net.BCrypt.Verify(pwd, xuser.Password)) {
-                            throw new AppException("Incorrect Password...");
-                        }
-                        if (xuser.Isactivated == 0) {
-                            throw new AppException("Please activate your account, check your email client inbox and click or tap the Activate button.");
-                        }
-                        return xuser;
-                    } else {
-                        throw new AppException("Username not found, please register first...");
+            try {
+                // Changed .FirstOrDefault() to .FirstOrDefaultAsync()
+                var xuser = await _context.Users.FirstOrDefaultAsync(c => c.UserName == usrname);
+                if (xuser is not null) {
+                    if (!BCrypt.Net.BCrypt.Verify(pwd, xuser.Password)) {
+                        throw new AppException("Incorrect Password...");
                     }
+                    if (xuser.Isactivated == 0) {
+                        throw new AppException("Please activate your account, check your email client inbox and click or tap the Activate button.");
+                    }
+                    return xuser;
+                } else {
+                    throw new AppException("Username not found, please register first...");
+                }
             } catch(AppException ex) {
-                    throw new AppException(ex.Message);
+                throw new AppException(ex.Message);
             }            
         }
     }

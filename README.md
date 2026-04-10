@@ -1,6 +1,5 @@
 SPA - Single Page Application
-.NET CORE 8 CLI, NEXTJS 15 - Typescipt and PostgreSql start-up project
-Responsive Mobile, Tablet and Desktop
+.NET CORE 8 CLI, RABBITMQ, NEXTJS 15 - Typescipt and PostgreSql starter project
 
 Requirements :
 1. Knowledge of C# and PosgreSql Entity and NextJS 15 - TypeScript
@@ -19,5 +18,5 @@ Features :
 4. Multi-Factor Authentication
 5. Fogot Password
 4. Swagger RESTful Documentation, https://localhost:7292/swagger/index.html
-
+5. RabbitMQ Integration
 

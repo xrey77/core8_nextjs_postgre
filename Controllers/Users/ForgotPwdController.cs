@@ -25,6 +25,7 @@ namespace core8_nextjs_postgre.Controllers.Users
     private readonly IConfiguration _configuration;  
     private readonly IWebHostEnvironment _env;
     private readonly ILogger<ForgotPwdController> _logger;
+    private readonly IRabbitMQProducer _rabbitMQProducer;
 
     public ForgotPwdController(
         IConfiguration configuration,
@@ -32,7 +33,8 @@ namespace core8_nextjs_postgre.Controllers.Users
         IMapper mapper,
         IUserService userService,
         EmailService emailService,
-        ILogger<ForgotPwdController> logger
+        ILogger<ForgotPwdController> logger,
+        IRabbitMQProducer rabbitMQProducer
         )
     {
         _configuration = configuration;  
@@ -40,18 +42,41 @@ namespace core8_nextjs_postgre.Controllers.Users
         _mapper = mapper;
         _userService = userService;
         _emailService = emailService;
-        _env = env;        
+        _env = env;
+        _rabbitMQProducer = rabbitMQProducer;
     }  
 
         //Forgot Password
         [HttpPut("/api/resetpassword/{email}")]
-        public IActionResult ResetPassword(string email, [FromBody]ForgotPassword model)
+        public async Task<IActionResult> ResetPassword(string email, [FromBody]ForgotPassword model)
         {
            model.Email = email;
            var user = _mapper.Map<User>(model);
             try
             {
-                _userService.ChangePassword(user);
+                await _userService.ChangePassword(user);
+
+                // START - Publish to RabbitMQ=============
+                try
+                {
+                    await _rabbitMQProducer.PublishUserRegisteredEvent(user);
+                }
+                catch (UnauthorizedAccessException ex) when (ex.Message.Contains("RabbitMQ credentials"))
+                {
+                    return StatusCode(500, new { 
+                        success = false, 
+                        message = $"Messaging password service configuration error. Please contact administrator, {ex.Message}" 
+                    });
+                }
+                catch (AppException ex)
+                {
+                    return StatusCode(500, new { 
+                        success = false, 
+                        message = $"An unexpected error occurred, {ex.Message}" 
+                    });
+                }
+                // END - Publish to RabbitMQ==============
+
                 return Ok(new { message = "Password successfully changed.." });
             }
             catch (AppException ex)
@@ -61,11 +86,11 @@ namespace core8_nextjs_postgre.Controllers.Users
         }
 
         [HttpPost("/api/emailtoken")]
-        public IActionResult EmailToken([FromBody]MailTokenModel model)
+        public async Task<IActionResult> EmailToken([FromBody]MailTokenModel model)
         {
            try {
-             int etoken = _userService.SendEmailToken(model.Email);             
-             _emailService.sendMailToken(model.Email,"Mail Token","Please copy or enter this token in forgot password option. " + etoken.ToString());
+             int etoken = await _userService.SendEmailToken(model.Email);             
+            _emailService.sendMailToken(model.Email,"Mail Token","Please copy or enter this token in forgot password option. " + etoken.ToString());
             return Ok(new { etoken = etoken});
            }
             catch (AppException ex)

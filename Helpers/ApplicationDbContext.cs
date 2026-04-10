@@ -1,7 +1,5 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using core8_nextjs_postgre.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace core8_nextjs_postgre.Helpers
 {    
@@ -13,10 +11,11 @@ namespace core8_nextjs_postgre.Helpers
         
         public DbSet<User> Users { get; set; } 
         public DbSet<Product> Products { get; set; } 
-        public DbSet<Role> Roles {get; set;}
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Configure Many-to-Many relationship between User and Role
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Roles)
                 .WithMany(r => r.Users)
@@ -31,20 +30,10 @@ namespace core8_nextjs_postgre.Helpers
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property(e => e.CreatedAt); // EF will now track the value you set in SaveChanges
+                entity.Property(e => e.CreatedAt); 
                 entity.Property(e => e.UpdatedAt);
             });
-            // modelBuilder.Entity<User>(entity =>
-            // {
-            //     entity.Property(e => e.CreatedAt)
-            //         .HasDefaultValueSql("now()")
-            //         .ValueGeneratedOnAdd(); 
-                    
-            //     entity.Property(e => e.UpdatedAt)
-            //         .HasDefaultValueSql("now()")
-            //          .ValueGeneratedOnAddOrUpdate(); 
-            // });
-
+                                
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.Property(e => e.CreatedAt)
@@ -54,30 +43,40 @@ namespace core8_nextjs_postgre.Helpers
                     .HasDefaultValueSql("now()");
             });
         }
-            public override int SaveChanges(bool acceptAllChangesOnSuccess)
-            {
-                var entries = ChangeTracker.Entries()
-                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
-                foreach (var entityEntry in entries)
+        // 1. Centralized method to handle timestamp updates
+        private void UpdateTimestamps()
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+            foreach (var entityEntry in entries)
+            {
+                // Ensure the entity actually has these properties to prevent runtime errors
+                if (entityEntry.Properties.Any(p => p.Metadata.Name == "UpdatedAt"))
                 {
                     entityEntry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
-
-                    if (entityEntry.State == EntityState.Added)
-                    {
-                        entityEntry.Property("CreatedAt").CurrentValue = DateTime.UtcNow;
-                    }
                 }
 
-                return base.SaveChanges(acceptAllChangesOnSuccess);
+                if (entityEntry.State == EntityState.Added && entityEntry.Properties.Any(p => p.Metadata.Name == "CreatedAt"))
+                {
+                    entityEntry.Property("CreatedAt").CurrentValue = DateTime.UtcNow;
+                }
             }
+        }
 
-            public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-            {
-                return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-            }
-        
+        // 2. Synchronous SaveChanges
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            UpdateTimestamps();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
 
+        // 3. Asynchronous SaveChanges (Crucial for REST APIs)
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            UpdateTimestamps();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
     }
-    
 }

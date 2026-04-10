@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "http://localhost:3000",
+"RedirectUrl": "",
+"LaunchCommand": "npm start",
+"WorkingDirectory": "/Users/reynald/My-Programs/DotnetCore/core8_nextjs_postgre/clientapp/",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}

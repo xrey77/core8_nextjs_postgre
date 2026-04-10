@@ -1,5 +1,3 @@
-        // "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
-
 using System;
 using System.IO;
 using System.Text;
@@ -21,12 +19,12 @@ using core8_nextjs_postgre.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.Services.AddControllers();
+builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ApplicationDbContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))            
-           .UseSnakeCaseNamingConvention(); // Automatically maps Id -> id
+           .UseSnakeCaseNamingConvention();
 });
 
 builder.Services.AddControllers()
@@ -34,10 +32,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
-// builder.Services.AddDbContext<ApplicationDbContext>(options => {
-//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-//     sqlOptions => sqlOptions.CommandTimeout(120));
-// });
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -101,6 +95,7 @@ builder.Services.AddCors();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJWTTokenServices, JWTServiceManage>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IRabbitMQProducer, RabbitMQProducer>();
 
 var app = builder.Build();
 app.UseHttpsRedirection();
