@@ -4,6 +4,7 @@
 <p><strong>Requirements :</strong></p>
 <p>1. Knowledge of C# and PosgreSql Entity and NextJS 15 - TypeScript</p>
 <p>2. PostgreSql Management</p>
+<p>3. RabbitMQ Management</p>
 <br/>
 <p><strong>Dependencies:</strong></p>
 <p>1. Node 23.5.0</p>
